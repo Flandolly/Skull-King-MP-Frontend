@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter as Router} from 'react-router-dom'
+import {CookiesProvider as Cookie} from "react-cookie";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Router>
+      <Cookie>
+          <App />
+      </Cookie>
+  </Router>,
   document.getElementById('root')
 );
 
