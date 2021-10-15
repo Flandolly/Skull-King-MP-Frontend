@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+body {
+  margin: 0;
+  background-image: url("https://i.imgur.com/kJiQ8P9.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .main-container {
@@ -23,4 +22,17 @@ code {
   font-size: 5.5em;
   font-family: "Pirata One", fantasy;
   text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
+}
+
+.landing-divider {
+  margin: 0 40px;
+  border-left: 2px solid black;
+  height: 64px;
+  display: inline;
+}
+
+.landing-or {
+  margin-top: 10px;
+  font-size: 20px;
+  font-family: "Pirata One", fantasy;
 }
