@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {Route, Router} from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import Home from "./Components/Home";
+import UserSignUp from "./Components/UserSignUp";
 
 
 const ENDPOINT = "http://127.0.0.1:8080";
@@ -46,6 +47,7 @@ function App() {
   return (
       <div className={"app-container"}>
           <Route path={"/"} exact component={Home}/>
+          <Route path={"/signup"} exact component={UserSignUp}/>
       </div>
   );
 }

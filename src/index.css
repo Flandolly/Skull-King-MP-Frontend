@@ -44,3 +44,8 @@ body {
 .l-fields {
     margin-bottom: 20px !important;
 }
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}

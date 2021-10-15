@@ -26,7 +26,7 @@ function Home() {
                      style={{borderLeft: '2px solid black', height: '64px', display: 'inline'}}>
 
                 </div>
-                <UserButton variant={"contained"}>Sign Up</UserButton>
+                <Link to={"/signup"}><UserButton variant={"contained"}>Sign Up</UserButton></Link>
             </div>
             <div>
                 <p className={"text-center landing-or"}>Or...</p>
