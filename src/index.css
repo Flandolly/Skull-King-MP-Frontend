@@ -1,38 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
 body {
-  margin: 0;
-  background-image: url("https://i.imgur.com/kJiQ8P9.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+    margin: 0;
+    background-image: url("https://i.imgur.com/kJiQ8P9.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .main-container {
-  height: 100vh;
+    height: 100vh;
 }
 
 .landing-title {
-  color: saddlebrown;
-  font-size: 5.5em;
-  font-family: "Pirata One", fantasy;
-  text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
+    color: saddlebrown;
+    font-size: 5.5em;
+    font-family: "Pirata One", fantasy;
+    text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
 }
 
 .landing-divider {
-  margin: 0 40px;
-  border-left: 2px solid black;
-  height: 64px;
-  display: inline;
+    margin: 0 40px;
+    border-left: 2px solid black;
+    height: 64px;
+    display: inline;
 }
 
 .landing-or {
-  margin-top: 10px;
-  font-size: 20px;
-  font-family: "Pirata One", fantasy;
+    margin-top: 10px;
+    font-size: 20px;
+    font-family: "Pirata One", fantasy;
+}
+
+.landing-join-room {
+    margin-top: 40px;
+}
+
+.l-fields {
+    margin-bottom: 20px !important;
 }

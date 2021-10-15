@@ -1,12 +1,14 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import Button from "@mui/material/Button"
-import { styled } from '@mui/material/styles'
-import { brown } from '@mui/material/colors'
-import {useState, useEffect} from "react";
+import {styled} from '@mui/material/styles'
+import {brown} from '@mui/material/colors'
+import {useState, useEffect} from "react"
+import RoomJoinForm from "./RoomJoinForm"
 
 function Home() {
 
-    const UserButton = styled(Button)(({ theme }) => ({
+    const UserButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(brown[900]),
         backgroundColor: brown[500],
         padding: '20px',
@@ -20,7 +22,10 @@ function Home() {
             <h1 className={"landing-title"}>Skull King Online</h1>
             <div className={"landing-buttons d-flex"}>
                 <UserButton variant={"contained"}>Log In</UserButton>
-                <div className={"landing-divider"} style={{borderLeft: '2px solid black', height: '64px', display: 'inline'}}> </div>
+                <div className={"landing-divider"}
+                     style={{borderLeft: '2px solid black', height: '64px', display: 'inline'}}>
+
+                </div>
                 <UserButton variant={"contained"}>Sign Up</UserButton>
             </div>
             <div>
@@ -28,7 +33,8 @@ function Home() {
                 <UserButton variant={"contained"}>Play As Guest</UserButton>
             </div>
             <div className={"landing-join-room"}>
-
+                <p className={"text-center"}><b>Already Have A Room?</b></p>
+                <RoomJoinForm/>
             </div>
         </div>
     )
