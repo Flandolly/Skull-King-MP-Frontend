@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +12,15 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.main-container {
+  height: 100vh;
+}
+
+.landing-title {
+  color: saddlebrown;
+  font-size: 5.5em;
+  font-family: "Pirata One", fantasy;
+  text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
 }
