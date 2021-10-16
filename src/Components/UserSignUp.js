@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,10 +7,19 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { brown } from '@mui/material/colors'
+import {brown} from '@mui/material/colors';
+import Alert from '@mui/material/Alert';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 
+const axios = require("axios")
+
 function UserSignUp() {
+
+    const [email, setEmail] = useState("")
+    const [fname, setfName] = useState("")
+    const [lname, setlName] = useState("")
+    const [username, setUsername] = useState("")
+    const [input, setInput] = useState("")
 
     const theme = createTheme({
         palette: {
@@ -23,10 +32,25 @@ function UserSignUp() {
     function handleSubmit(event) {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+        axios.post("http://127.0.0.1:8080/api/signup", {
+            firstName: data.get("firstName"),
+            lastName: data.get("lastName"),
+            email: data.get("email"),
+            username: data.get("username"),
+            password: data.get("password")
         })
+            .then(function (response) {
+                console.log(response)
+            })
+            .catch(function (error) {
+
+            })
+    }
+
+    function handleChange(field, value) {
+        if (value.search(/^[a-zA-Z ]*$/) !== -1) {
+            setInput(value)
+        }
     }
 
     return (
@@ -44,10 +68,12 @@ function UserSignUp() {
                     <Typography component="h1" variant="h5">
                         Sign Up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                    <Box component="form" onSubmit={(event) => handleSubmit(event)} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    value={input}
+                                    onChange={(event) => handleChange("fname", event.target.value)}
                                     autoComplete="given-name"
                                     variant={"filled"}
                                     name="firstName"
