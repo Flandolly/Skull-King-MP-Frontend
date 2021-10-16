@@ -46,6 +46,7 @@ function UserSignUp() {
             .then(function (response) {
                 setError(false)
                 console.log(response)
+                window.location.href = "/success"
             })
             .catch(function (error) {
                 setError(true)
@@ -83,6 +84,8 @@ function UserSignUp() {
                         setUsername("")
                     }
                 }
+                break
+            default:
                 break
         }
 
@@ -156,15 +159,18 @@ function UserSignUp() {
                                     fullWidth
                                     id="username"
                                     variant={"filled"}
+                                    type={"username"}
                                     label="Username"
                                     name="username"
-                                    autoComplete="off"
+                                    autoComplete="username"
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
+                                    error={password.length < 8}
+                                    helperText={password.length < 8 ? "Password is too short." : null}
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
                                     variant={"filled"}
