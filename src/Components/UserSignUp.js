@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -23,6 +23,7 @@ function UserSignUp() {
     const [helper, setHelper] = useState("")
     const [error, setError] = useState(false)
     const [errorText, setErrorText] = useState("")
+    const [userData, setUserData] = useState(null)
     const fields = [email, fname, lname, username, password]
 
     const theme = createTheme({
@@ -45,8 +46,10 @@ function UserSignUp() {
         })
             .then(function (response) {
                 setError(false)
-                console.log(response)
-                window.location.href = "/success"
+                setUserData({
+                    email: data.get("email"),
+                    password: data.get("password")
+                })
             })
             .catch(function (error) {
                 setError(true)
@@ -55,7 +58,7 @@ function UserSignUp() {
     }
 
     function handleChange(field, value) {
-        switch(field){
+        switch (field) {
             case "fname":
                 if (value.search(/^[a-zA-Z ]*$/) !== -1) {
                     setfName(value)
@@ -89,6 +92,13 @@ function UserSignUp() {
                 break
         }
 
+    }
+
+    if (userData) {
+        return <Redirect to={{
+            pathname: "/success",
+            state: {userData}
+        }}/>
     }
 
     return (
@@ -162,15 +172,15 @@ function UserSignUp() {
                                     type={"username"}
                                     label="Username"
                                     name="username"
-                                    autoComplete="username"
+                                    autoComplete="nickname"
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    error={password.length < 8}
-                                    helperText={password.length < 8 ? "Password is too short." : null}
+                                    error={password.length < 8 && password.length !== 0}
+                                    helperText={password.length < 8 && password.length !== 0 ? "Password is too short." : null}
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)}
                                     variant={"filled"}

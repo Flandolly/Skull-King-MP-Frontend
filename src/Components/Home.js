@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import Button from "@mui/material/Button"
 import {styled} from '@mui/material/styles'
 import {brown} from '@mui/material/colors'
-import {useState, useEffect} from "react"
 import RoomJoinForm from "./RoomJoinForm"
 
 function Home() {
