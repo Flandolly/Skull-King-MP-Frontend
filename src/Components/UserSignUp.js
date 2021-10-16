@@ -19,7 +19,7 @@ function UserSignUp() {
     const [fname, setfName] = useState("")
     const [lname, setlName] = useState("")
     const [username, setUsername] = useState("")
-    const [input, setInput] = useState("")
+    const [error, setError] = useState("")
 
     const theme = createTheme({
         palette: {
@@ -48,9 +48,38 @@ function UserSignUp() {
     }
 
     function handleChange(field, value) {
-        if (value.search(/^[a-zA-Z ]*$/) !== -1) {
-            setInput(value)
+        switch(field){
+            case "fname":
+                if (value.search(/^[a-zA-Z ]*$/) !== -1) {
+                    setfName(value)
+                }
+                break
+            case "lname":
+                if (value.search(/^[a-zA-Z ]*$/) !== -1) {
+                    setlName(value)
+                }
+                break
+            case "email":
+                setEmail(value)
+                if (value.search(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i) === -1) {
+                    setError("Invalid email address")
+                } else {
+                    setError("")
+                }
+                break
+            case "username":
+                if (value.search(/^[A-Z_.0-9]*$/i) !== -1) {
+                    if (value[0] !== undefined) {
+                        if (value[0].search(/^[0-9]*$/) === -1) {
+                            setUsername(value)
+                        }
+                    } else {
+                        setUsername("")
+                    }
+                }
+                break
         }
+
     }
 
     return (
@@ -72,7 +101,7 @@ function UserSignUp() {
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    value={input}
+                                    value={fname}
                                     onChange={(event) => handleChange("fname", event.target.value)}
                                     autoComplete="given-name"
                                     variant={"filled"}
@@ -86,6 +115,8 @@ function UserSignUp() {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    value={lname}
+                                    onChange={(event) => handleChange("lname", event.target.value)}
                                     required
                                     fullWidth
                                     id="lastName"
@@ -97,6 +128,10 @@ function UserSignUp() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    value={email}
+                                    onChange={(event) => handleChange("email", event.target.value)}
+                                    type={"email"}
+                                    helperText={error}
                                     required
                                     fullWidth
                                     id="email"
@@ -108,6 +143,8 @@ function UserSignUp() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    value={username}
+                                    onChange={(event) => handleChange("username", event.target.value)}
                                     required
                                     fullWidth
                                     id="username"
