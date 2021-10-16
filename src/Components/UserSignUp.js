@@ -19,7 +19,11 @@ function UserSignUp() {
     const [fname, setfName] = useState("")
     const [lname, setlName] = useState("")
     const [username, setUsername] = useState("")
-    const [error, setError] = useState("")
+    const [password, setPassword] = useState("")
+    const [helper, setHelper] = useState("")
+    const [error, setError] = useState(false)
+    const [errorText, setErrorText] = useState("")
+    const fields = [email, fname, lname, username, password]
 
     const theme = createTheme({
         palette: {
@@ -40,10 +44,12 @@ function UserSignUp() {
             password: data.get("password")
         })
             .then(function (response) {
+                setError(false)
                 console.log(response)
             })
             .catch(function (error) {
-
+                setError(true)
+                setErrorText(error.response.data.response)
             })
     }
 
@@ -62,9 +68,9 @@ function UserSignUp() {
             case "email":
                 setEmail(value)
                 if (value.search(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i) === -1) {
-                    setError("Invalid email address")
+                    setHelper("Invalid email address")
                 } else {
-                    setError("")
+                    setHelper("")
                 }
                 break
             case "username":
@@ -86,6 +92,7 @@ function UserSignUp() {
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
+                {error ? <Alert variant={"filled"} severity={"error"}>{errorText}</Alert> : null}
                 <Box
                     sx={{
                         marginTop: 8,
@@ -131,7 +138,7 @@ function UserSignUp() {
                                     value={email}
                                     onChange={(event) => handleChange("email", event.target.value)}
                                     type={"email"}
-                                    helperText={error}
+                                    helperText={helper}
                                     required
                                     fullWidth
                                     id="email"
@@ -151,12 +158,15 @@ function UserSignUp() {
                                     variant={"filled"}
                                     label="Username"
                                     name="username"
+                                    autoComplete="off"
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
+                                    value={password}
+                                    onChange={(event) => setPassword(event.target.value)}
                                     variant={"filled"}
                                     name="password"
                                     label="Password"
@@ -168,6 +178,7 @@ function UserSignUp() {
                         </Grid>
                         <Button
                             type="submit"
+                            disabled={!fields.every((value) => value.length !== 0)}
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
