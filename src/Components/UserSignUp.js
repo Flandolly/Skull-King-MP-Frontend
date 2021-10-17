@@ -114,7 +114,7 @@ function UserSignUp() {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography component="h1" variant="h5">
+                    <Typography className={"signup-title"} component="h1" variant="h5">
                         Sign Up
                     </Typography>
                     <Box component="form" onSubmit={(event) => handleSubmit(event)} sx={{mt: 3}}>

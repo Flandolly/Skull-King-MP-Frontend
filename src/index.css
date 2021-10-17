@@ -5,12 +5,37 @@ code {
     monospace;
 }
 
-body {
+html {
+    height: 100vh;
+}
+
+div.app-container {
+    position: relative;
     margin: 0;
-    background-image: url("https://i.imgur.com/kJiQ8P9.png");
+    z-index: 1;
+    /*background-image: url("https://i.imgur.com/kJiQ8P9.png");*/
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+div.app-container:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    background: url("https://i.imgur.com/kJiQ8P9.png") no-repeat fixed;
+    background-size: cover;
+    opacity: 0.5;
+}
+
+.css-binzgt {
+    margin-top: 0!important;
+}
+
+.signup-title {
+    margin-top: 40px!important;
 }
 
 .main-container {
