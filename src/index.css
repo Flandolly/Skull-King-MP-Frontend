@@ -34,7 +34,7 @@ div.app-container:before {
     margin-top: 0!important;
 }
 
-.signup-title {
+.signup-title, .signin-title {
     margin-top: 40px!important;
 }
 

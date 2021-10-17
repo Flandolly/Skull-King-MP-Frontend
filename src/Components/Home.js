@@ -20,7 +20,7 @@ function Home() {
         <div className={"main-container d-flex flex-column justify-content-center align-items-center"}>
             <h1 className={"landing-title"}>Skull King Online</h1>
             <div className={"landing-buttons d-flex"}>
-                <UserButton variant={"contained"}>Log In</UserButton>
+                <Link to={"/login"}><UserButton variant={"contained"}>Log In</UserButton></Link>
                 <div className={"landing-divider"}
                      style={{borderLeft: '2px solid black', height: '64px', display: 'inline'}}>
 
