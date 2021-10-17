@@ -42,10 +42,10 @@ div.app-container:before {
     height: 100vh;
 }
 
-.landing-title {
+.landing-title, .lobby-title {
     color: saddlebrown;
     font-size: 5.5em;
-    font-family: "Pirata One", fantasy;
+    font-family: "Pirata One", fantasy!important;
     text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
 }
 

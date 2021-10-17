@@ -5,6 +5,7 @@ import Home from "./Components/Home";
 import UserSignUp from "./Components/UserSignUp";
 import SignUpSuccess from "./Components/auxiliary/SignUpSuccess";
 import UserLogIn from "./Components/UserLogIn";
+import RoomLobby from "./Components/RoomLobby";
 
 
 const ENDPOINT = "http://127.0.0.1:8080";
@@ -52,6 +53,7 @@ function App() {
             <Route path={"/signup"} exact component={UserSignUp}/>
             <Route path={"/login"} exact component={UserLogIn}/>
             <Route path={"/success"} exact render={(props) => <SignUpSuccess {...props} />}/>
+            <Route path={"/lobby"} exact component={RoomLobby}/>
         </div>
     );
 }
