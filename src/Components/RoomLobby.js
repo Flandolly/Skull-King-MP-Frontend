@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import Button from "@mui/material/Button"
 import {styled} from '@mui/material/styles'
@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import RoomList from "./RoomList"
 import {ThemeProvider, createTheme} from '@mui/material/styles'
 import {CssBaseline} from "@mui/material";
+import {SocketContext} from "../context/socket"
 
 function RoomLobby() {
 
