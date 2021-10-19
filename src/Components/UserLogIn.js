@@ -1,13 +1,13 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import {Link, Redirect} from 'react-router-dom';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import {Link, Redirect} from "react-router-dom";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {brown} from "@mui/material/colors";
 import axios from "axios";
 import {useState} from "react";
@@ -23,38 +23,38 @@ const theme = createTheme({
 
 function UserLogIn() {
 
-    const [token, setToken] = useState(null)
-    const [error, setError] = useState(false)
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [errorText, setErrorText] = useState("")
+    const [token, setToken] = useState(null);
+    const [error, setError] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorText, setErrorText] = useState("");
 
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
         axios.post("/api/signin", {
-            email: data.get('email'),
-            password: data.get('password'),
+            email: data.get("email"),
+            password: data.get("password"),
         })
             .then(function (response) {
-                console.log(response)
-                setToken(response.data.token)
+                console.log(response);
+                setToken(response.data.token);
             })
             .catch(function (error) {
-                console.log(error.response)
-                setError(true)
-                setErrorText(error.response.data)
-                setPassword("")
-                setEmail("")
-            })
+                console.log(error.response);
+                setError(true);
+                setErrorText(error.response.data);
+                setPassword("");
+                setEmail("");
+            });
     }
 
     if (token) {
         return <Redirect to={{
             pathname: "/lobby",
             state: {token}
-        }}/>
+        }}/>;
     }
 
     return (
@@ -65,9 +65,9 @@ function UserLogIn() {
                 <Box
                     sx={{
                         marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
                     }}
                 >
                     <Typography className="signin-title" component="h1" variant="h5">
@@ -131,4 +131,4 @@ function UserLogIn() {
         ;
 }
 
-export default UserLogIn
+export default UserLogIn;

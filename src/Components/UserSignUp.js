@@ -1,30 +1,30 @@
-import React, {useState} from 'react';
-import {Link, Redirect} from 'react-router-dom'
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {brown} from '@mui/material/colors';
-import Alert from '@mui/material/Alert';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import React, {useState} from "react";
+import {Link, Redirect} from "react-router-dom";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import {brown} from "@mui/material/colors";
+import Alert from "@mui/material/Alert";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
 
-const axios = require("axios")
+const axios = require("axios");
 
 function UserSignUp() {
 
-    const [email, setEmail] = useState("")
-    const [fname, setfName] = useState("")
-    const [lname, setlName] = useState("")
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [helper, setHelper] = useState("")
-    const [error, setError] = useState(false)
-    const [errorText, setErrorText] = useState("")
-    const [userData, setUserData] = useState(null)
-    const fields = [email, fname, lname, username, password]
+    const [email, setEmail] = useState("");
+    const [fname, setfName] = useState("");
+    const [lname, setlName] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [helper, setHelper] = useState("");
+    const [error, setError] = useState(false);
+    const [errorText, setErrorText] = useState("");
+    const [userData, setUserData] = useState(null);
+    const fields = [email, fname, lname, username, password];
 
     const theme = createTheme({
         palette: {
@@ -35,9 +35,9 @@ function UserSignUp() {
     });
 
     function handleSubmit(event) {
-        event.preventDefault()
-        const data = new FormData(event.currentTarget)
-        axios.post("http://127.0.0.1:8080/api/signup", {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        axios.post("api/signup", {
             firstName: data.get("firstName"),
             lastName: data.get("lastName"),
             email: data.get("email"),
@@ -45,51 +45,52 @@ function UserSignUp() {
             password: data.get("password")
         })
             .then(function (response) {
-                setError(false)
+                console.log(response)
+                setError(false);
                 setUserData({
                     email: data.get("email"),
                     password: data.get("password")
-                })
+                });
             })
             .catch(function (error) {
-                setError(true)
-                setErrorText(error.response.data.response)
-            })
+                setError(true);
+                setErrorText(error.response.data.response);
+            });
     }
 
     function handleChange(field, value) {
         switch (field) {
             case "fname":
                 if (value.search(/^[a-zA-Z ]*$/) !== -1) {
-                    setfName(value)
+                    setfName(value);
                 }
-                break
+                break;
             case "lname":
                 if (value.search(/^[a-zA-Z ]*$/) !== -1) {
-                    setlName(value)
+                    setlName(value);
                 }
-                break
+                break;
             case "email":
-                setEmail(value)
+                setEmail(value);
                 if (value.search(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i) === -1) {
-                    setHelper("Invalid email address")
+                    setHelper("Invalid email address");
                 } else {
-                    setHelper("")
+                    setHelper("");
                 }
-                break
+                break;
             case "username":
                 if (value.search(/^[A-Z_.0-9]*$/i) !== -1) {
                     if (value[0] !== undefined) {
                         if (value[0].search(/^[0-9]*$/) === -1) {
-                            setUsername(value)
+                            setUsername(value);
                         }
                     } else {
-                        setUsername("")
+                        setUsername("");
                     }
                 }
-                break
+                break;
             default:
-                break
+                break;
         }
 
     }
@@ -98,7 +99,7 @@ function UserSignUp() {
         return <Redirect to={{
             pathname: "/success",
             state: {userData}
-        }}/>
+        }}/>;
     }
 
     return (
@@ -109,9 +110,9 @@ function UserSignUp() {
                 <Box
                     sx={{
                         marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
                     }}
                 >
                     <Typography className={"signup-title"} component="h1" variant="h5">
@@ -212,7 +213,7 @@ function UserSignUp() {
                 </Box>
             </Container>
         </ThemeProvider>
-    )
+    );
 }
 
-export default UserSignUp
+export default UserSignUp;

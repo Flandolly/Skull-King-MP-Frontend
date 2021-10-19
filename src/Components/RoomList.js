@@ -5,26 +5,26 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
-import axios from "axios"
+import axios from "axios";
 
 function RoomList({showPrivate, showFull}) {
-    const [roomList, setRoomList] = useState([])
+    const [roomList, setRoomList] = useState([]);
 
     useEffect(() => {
         axios.get("/api/rooms")
             .then(function (response) {
-                console.log(response)
+                console.log(response);
 
                 if (!showPrivate) {
-                    const filtered = response.data.filter((room) => room.isPublic === true)
-                    setRoomList(filtered)
+                    const filtered = response.data.filter((room) => room.isPublic === true);
+                    setRoomList(filtered);
                 } else if (!showFull) {
-                    const filtered = response.data.filter((room) => room.players.length < 8)
-                    setRoomList(filtered)
+                    const filtered = response.data.filter((room) => room.players.length < 8);
+                    setRoomList(filtered);
                 } else {
-                    setRoomList(response.data)
+                    setRoomList(response.data);
                 }
-            })
+            });
     }, [showPrivate, showFull]);
 
     return roomList.map((room, idx) => {
@@ -49,7 +49,7 @@ function RoomList({showPrivate, showFull}) {
                                     m: 1.5
                                 }}>
                                     <Typography>
-                                        {room.owner.username}'s Game
+                                        {room.owner.username}&apos;s Game
                                     </Typography>
                                 </Grid>
                                 <Grid item sx={{
@@ -63,7 +63,7 @@ function RoomList({showPrivate, showFull}) {
                                     m: 1.5
                                 }}>
                                     <Typography>
-                                        Players: {room.players.length}/8
+                                        Players: {room.players.length}/{room.maxPlayers}
                                     </Typography>
                                 </Grid>
                                 <Grid item sx={{
@@ -78,9 +78,9 @@ function RoomList({showPrivate, showFull}) {
                     </Card>
                 </Stack>
             </Box>
-        )
-    })
+        );
+    });
 
 }
 
-export default RoomList
+export default RoomList;

@@ -1,6 +1,6 @@
-import React from 'react'
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
+import React from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import {brown} from "@mui/material/colors";
 
@@ -9,11 +9,11 @@ function RoomJoinForm() {
     const SubmitButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(brown[900]),
         backgroundColor: brown[500],
-        padding: '20px',
-        '&:hover': {
+        padding: "20px",
+        "&:hover": {
             backgroundColor: brown[700],
         }
-    }))
+    }));
 
     return (
         <div className={"landing-form"}>
@@ -24,7 +24,7 @@ function RoomJoinForm() {
                 <SubmitButton variant={"contained"}>Join Game</SubmitButton>
             </form>
         </div>
-    )
+    );
 }
 
-export default RoomJoinForm
+export default RoomJoinForm;

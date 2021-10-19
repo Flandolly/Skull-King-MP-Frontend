@@ -5,15 +5,15 @@ import UserSignUp from "./Components/UserSignUp";
 import SignUpSuccess from "./Components/auxiliary/SignUpSuccess";
 import UserLogIn from "./Components/UserLogIn";
 import RoomLobby from "./Components/RoomLobby";
-import {SocketContext, socket} from "./context/socket"
+import {SocketContext, socket} from "./context/socket";
 
 
 function App() {
 
     useEffect(() => {
         socket.on("connect", () => {
-            console.log(socket.id)
-        })
+            console.log(socket.id);
+        });
     }, []);
 
     return (
