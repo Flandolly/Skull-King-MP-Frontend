@@ -7,16 +7,25 @@ import Box from "@mui/material/Box";
 import React, {useEffect, useState} from "react";
 import axios from "axios"
 
-function RoomList() {
+function RoomList({showPrivate, showFull}) {
     const [roomList, setRoomList] = useState([])
 
     useEffect(() => {
         axios.get("/api/rooms")
             .then(function (response) {
                 console.log(response)
-                setRoomList(response.data)
+
+                if (!showPrivate) {
+                    const filtered = response.data.filter((room) => room.isPublic === true)
+                    setRoomList(filtered)
+                } else if (!showFull) {
+                    const filtered = response.data.filter((room) => room.players.length < 8)
+                    setRoomList(filtered)
+                } else {
+                    setRoomList(response.data)
+                }
             })
-    }, [])
+    }, [showPrivate, showFull]);
 
     return roomList.map((room, idx) => {
         return (
@@ -28,7 +37,7 @@ function RoomList() {
                         width: "80vw"
                     }}>
                         <CardContent>
-                            <Grid container direction={"row"} justifyContent={"space-between"}>
+                            <Grid container direction={"row"} justifyContent={"space-between"} flexWrap={"nowrap"}>
                                 <Grid item sx={{
                                     m: 1.5
                                 }}>
