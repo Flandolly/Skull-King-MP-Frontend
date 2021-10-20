@@ -7,6 +7,7 @@ import UserLogIn from "./Components/UserLogIn";
 import RoomLobby from "./Components/RoomLobby";
 import {SocketContext, socket} from "./context/socket";
 import {UserProvider} from "./context/GlobalStates"
+import RoomShow from "./Components/CRUDs/RoomShow";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path={"/login"} exact component={UserLogIn}/>
                     <Route path={"/success"} exact render={(props) => <SignUpSuccess {...props} />}/>
                     <Route path={"/lobby"} exact component={RoomLobby}/>
+                    <Route path={"/rooms/:id"} exact component={RoomShow}/>
                 </div>
             </SocketContext.Provider>
         </UserProvider>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import {brown} from "@mui/material/colors";
 import Alert from "@mui/material/Alert";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {UserContext} from "../context/GlobalStates";
 
 const axios = require("axios");
 
@@ -25,6 +26,7 @@ function UserSignUp() {
     const [errorText, setErrorText] = useState("");
     const [userData, setUserData] = useState(null);
     const fields = [email, fname, lname, username, password];
+    const {user, setUser} = useContext(UserContext)
 
     const theme = createTheme({
         palette: {
@@ -48,9 +50,17 @@ function UserSignUp() {
                 console.log(response)
                 setError(false);
                 setUserData({
-                    email: data.get("email"),
+                    email: response.data.email,
                     password: data.get("password")
                 });
+                setUser({...user,
+                    _id: response.data._id,
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    email: response.data.email,
+                    username: response.data.username
+                })
+
             })
             .catch(function (error) {
                 setError(true);
@@ -96,10 +106,7 @@ function UserSignUp() {
     }
 
     if (userData) {
-        // return <Redirect to={{
-        //     pathname: "/success",
-        //     state: {userData}
-        // }}/>;
+        localStorage.setItem("user", JSON.stringify(user))
         return window.location.href = `/success?email=${userData.email}&password=${userData.password}`;
     }
 

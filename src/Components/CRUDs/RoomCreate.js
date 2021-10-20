@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -8,13 +8,13 @@ import {deepOrange} from "@mui/material/colors";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 import {SocketContext} from "../../context/socket"
-import {UserContext} from "../../context/GlobalStates"
 import axios from "axios";
 
 function RoomCreate({setShowModal}) {
 
     const socket = useContext(SocketContext)
-    const [user, setUser] = useContext(UserContext)
+    const storedUser = JSON.parse(localStorage.getItem("user"))
+    const [room, setRoom] = useState(null)
     const [success, setSuccess] = useState(false)
     const [roomID, setRoomID] = useState("")
     const [roomPublic, setRoomPublic] = useState(true)
@@ -35,9 +35,9 @@ function RoomCreate({setShowModal}) {
         }
     }));
 
-    function loadUser() {
-
-    }
+    useEffect(() => {
+        console.log(storedUser)
+    }, [storedUser])
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -47,19 +47,23 @@ function RoomCreate({setShowModal}) {
             name: data.get("title"),
             maxPlayers: data.get("maxPlayers"),
             isPublic: roomPublic,
-            owner: "616c1d41a37ce4f7e1314ff2"
+            owner: storedUser._id
         })
             .then(function (response) {
                 console.log(response)
                 socket.emit("roomCreated", response.data)
+                setRoom(response.data)
                 setRoomID(response.data._id)
                 setSuccess(true)
                 setShowModal(false)
             })
+            .catch(function(error) {
+                console.log(error.response)
+            })
     }
 
     if (success) {
-        socket.emit("userJoined")
+        socket.emit("userJoined", storedUser, room)
         return window.location.href = `/rooms/${roomID}`
     }
 
@@ -72,7 +76,7 @@ function RoomCreate({setShowModal}) {
                             <TextField
                                 variant={"filled"}
                                 name={"title"}
-                                defaultValue={"New Game"}
+                                defaultValue={`${storedUser.username}'s Game`}
                                 fullWidth
                                 id={"title"}
                                 label={"Room Name"}

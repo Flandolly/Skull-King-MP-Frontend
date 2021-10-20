@@ -1,9 +1,8 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import axios from "axios";
 
 function SignUpSuccess(props) {
 
-    const [token, setToken] = useState(null);
 
     useEffect(() => {
         const search = props.location.search
@@ -13,16 +12,12 @@ function SignUpSuccess(props) {
             password: userData.get("password"),
         })
             .then(function (response) {
-                setToken(response.data.token);
+                localStorage.setItem("userToken", response.data.token)
             });
     }, [props]);
 
-    if (token) {
-        // return <Redirect to={{
-        //     pathname: "/lobby",
-        //     state: {token}
-        // }}/>;
-        return window.location.href = `/lobby?token=${token}`
+    if (localStorage.getItem("userToken") !== undefined) {
+        return window.location.href = `/lobby`
     }
 
     return (

@@ -36,7 +36,7 @@ function RoomList({showPrivate, showFull}) {
 
     return roomList.map((room, idx) => {
         return (
-            <Link onClick={() => socket.emit("userJoined")} to={`/rooms/${room._id}`} key={idx}>
+            <Link onClick={() => socket.emit("userJoined", JSON.parse(localStorage.getItem("user")), room)} to={`/rooms/${room._id}`} key={idx}>
                 <Box sx={{
                     mt: 3
                 }}>

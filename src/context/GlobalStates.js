@@ -1,19 +1,19 @@
-/*
-Sourced from: https://medium.com/geekculture/how-to-use-context-api-and-jwt-to-maintain-user-sessions-eb5602e83a03
- */
-
-import React, {useState, createContext} from "react";
+import React, {useState, createContext, useMemo} from "react";
 
 export const UserContext = createContext()
 export const UserProvider = (props) => {
     const [user, setUser] = useState({
         _id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
         username: "",
-        token: ""
     })
 
+    const providerValue = useMemo(() => ({user, setUser}), [user, setUser])
+
     return (
-        <UserContext.Provider value={[user, setUser]}>
+        <UserContext.Provider value={providerValue}>
             {props.children}
         </UserContext.Provider>
     )
