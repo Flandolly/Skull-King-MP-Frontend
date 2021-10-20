@@ -1,20 +1,22 @@
-import React, {useState} from "react";
-import {Link, Redirect} from "react-router-dom";
+import React, {useContext, useState} from "react";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import {deepOrange, red} from "@mui/material/colors";
-import Alert from "@mui/material/Alert";
+import {deepOrange} from "@mui/material/colors";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
+import {SocketContext} from "../../context/socket"
+import {UserContext} from "../../context/GlobalStates"
 import axios from "axios";
 
 function RoomCreate({setShowModal}) {
 
+    const socket = useContext(SocketContext)
+    const [user, setUser] = useContext(UserContext)
+    const [success, setSuccess] = useState(false)
+    const [roomID, setRoomID] = useState("")
     const [roomPublic, setRoomPublic] = useState(true)
 
     const theme = createTheme({
@@ -33,10 +35,13 @@ function RoomCreate({setShowModal}) {
         }
     }));
 
+    function loadUser() {
+
+    }
+
     function handleSubmit(event) {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-        console.log(data.get("maxPlayers"))
 
         axios.post("api/rooms/new", {
             name: data.get("title"),
@@ -46,8 +51,16 @@ function RoomCreate({setShowModal}) {
         })
             .then(function (response) {
                 console.log(response)
+                socket.emit("roomCreated", response.data)
+                setRoomID(response.data._id)
+                setSuccess(true)
                 setShowModal(false)
             })
+    }
+
+    if (success) {
+        socket.emit("userJoined")
+        return window.location.href = `/rooms/${roomID}`
     }
 
     return (

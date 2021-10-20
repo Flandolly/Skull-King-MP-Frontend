@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -96,10 +96,11 @@ function UserSignUp() {
     }
 
     if (userData) {
-        return <Redirect to={{
-            pathname: "/success",
-            state: {userData}
-        }}/>;
+        // return <Redirect to={{
+        //     pathname: "/success",
+        //     state: {userData}
+        // }}/>;
+        return window.location.href = `/success?email=${userData.email}&password=${userData.password}`;
     }
 
     return (

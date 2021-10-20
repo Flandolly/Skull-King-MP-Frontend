@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import {red, brown} from "@mui/material/colors";
@@ -10,7 +9,6 @@ import Checkbox from "@mui/material/Checkbox";
 import RoomList from "./RoomList";
 import {ThemeProvider, createTheme} from "@mui/material/styles";
 import {Backdrop, CssBaseline, Fade, FormControlLabel, FormGroup, Modal} from "@mui/material";
-import {SocketContext} from "../context/socket";
 import RoomCreate from "./CRUDs/RoomCreate";
 
 function RoomLobby() {

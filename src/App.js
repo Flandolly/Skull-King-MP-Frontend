@@ -6,6 +6,7 @@ import SignUpSuccess from "./Components/auxiliary/SignUpSuccess";
 import UserLogIn from "./Components/UserLogIn";
 import RoomLobby from "./Components/RoomLobby";
 import {SocketContext, socket} from "./context/socket";
+import {UserProvider} from "./context/GlobalStates"
 
 
 function App() {
@@ -17,15 +18,17 @@ function App() {
     }, []);
 
     return (
-        <SocketContext.Provider value={socket}>
-            <div className={"app-container"}>
-                <Route path={"/"} exact component={Home}/>
-                <Route path={"/signup"} exact component={UserSignUp}/>
-                <Route path={"/login"} exact component={UserLogIn}/>
-                <Route path={"/success"} exact render={(props) => <SignUpSuccess {...props} />}/>
-                <Route path={"/lobby"} exact component={RoomLobby}/>
-            </div>
-        </SocketContext.Provider>
+        <UserProvider>
+            <SocketContext.Provider value={socket}>
+                <div className={"app-container"}>
+                    <Route path={"/"} exact component={Home}/>
+                    <Route path={"/signup"} exact component={UserSignUp}/>
+                    <Route path={"/login"} exact component={UserLogIn}/>
+                    <Route path={"/success"} exact render={(props) => <SignUpSuccess {...props} />}/>
+                    <Route path={"/lobby"} exact component={RoomLobby}/>
+                </div>
+            </SocketContext.Provider>
+        </UserProvider>
     );
 }
 
