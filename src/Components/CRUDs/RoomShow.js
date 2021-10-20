@@ -1,12 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import {SocketContext} from "../../context/socket"
 import Container from "@mui/material/Container";
 import {Avatar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {deepOrange} from "@mui/material/colors";
+import {Redirect} from "react-router-dom";
+import Button from "@mui/material/Button";
 
 function RoomShow(props) {
 
@@ -16,45 +19,16 @@ function RoomShow(props) {
 
 
     useEffect(() => {
+        socket.emit("syncRoom", props.match.url.split("/")[2])
+        console.log(props.match.url.split("/")[2])
+    }, [props.match.url, socket])
 
-        socket.on("RoomJoinResponse", (response) => {
-            if (response === "Success") {
-                console.log("Player successfully joined.")
-            }
-
-            if (response === "Failure") {
-                console.log("Could not join.")
-            }
-        })
-
-        socket.on("RoomLeaveResponse", (response) => {
-            if (response === "Success") {
-                console.log("Player left.")
-            }
-            if (response === "Room Failure") {
-                console.log("Room not found.")
-            }
-            if (response === "Player Failure") {
-                console.log("Player not found.")
-            }
-        })
-
+    useEffect(() => {
         socket.on("syncRoom", (room) => {
-            axios.put(`../api${props.match.url}`, room)
-                .then(function(response) {
-                    console.log(response)
-                    setRoom(response.data)
-                })
-                .catch(function(error) {
-                    console.log(error.response)
-                })
+            console.log(room)
+            setRoom(room)
         })
-
-        socket.on("disconnect", () => {
-            console.log("Player disconnected.")
-            socket.emit("userLeft", storedUser, room)
-        })
-    },[props.match.url, socket, room, storedUser])
+    }, [socket])
 
     if (room) {
         return (
@@ -72,20 +46,32 @@ function RoomShow(props) {
                         {room.players.map((player, idx) => {
                             return (
                                 <Grid key={idx} item>
-                                    <Avatar sx={{ bgcolor: deepOrange[500], width: 100, height: 100 }}>{storedUser.username[0].toUpperCase()}</Avatar>
+                                    <Avatar sx={{
+                                        bgcolor: deepOrange[500],
+                                        width: 100,
+                                        height: 100
+                                    }}>{storedUser.username[0].toUpperCase()}</Avatar>
                                     <Typography>
                                         {storedUser.username}
                                     </Typography>
                                 </Grid>
                             )
                         })}
+                        <Link to={"/lobby"}>
+                            <Button onClick={() => {
+                                socket.emit("userLeft", room, storedUser)
+                                socket.emit("syncRoom", props.match.url.split("/")[2])
+                            }}
+                                    variant={"filled"}>Leave
+                            </Button>
+                        </Link>
                     </Grid>
                 </Box>
             </Container>
         )
     } else {
         return (
-            <div>Error loading room</div>
+            <div>Error</div>
         )
     }
 }

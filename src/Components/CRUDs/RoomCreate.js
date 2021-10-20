@@ -42,29 +42,39 @@ function RoomCreate({setShowModal}) {
     function handleSubmit(event) {
         event.preventDefault()
         const data = new FormData(event.currentTarget)
-
-        axios.post("api/rooms/new", {
+        const room = {
             name: data.get("title"),
+            players: [storedUser.username],
             maxPlayers: data.get("maxPlayers"),
             isPublic: roomPublic,
             owner: storedUser._id
-        })
-            .then(function (response) {
-                console.log(response)
-                socket.emit("roomCreated", response.data)
-                setRoom(response.data)
-                setRoomID(response.data._id)
-                setSuccess(true)
-                setShowModal(false)
-            })
-            .catch(function(error) {
-                console.log(error.response)
-            })
+        }
+
+        // axios.post("api/rooms/new", {
+        //     name: data.get("title"),
+        //     maxPlayers: data.get("maxPlayers"),
+        //     isPublic: roomPublic,
+        //     owner: storedUser._id
+        // })
+        //     .then(function (response) {
+        //         console.log(response)
+        //         socket.emit("roomCreated", response.data)
+        //         setRoom(response.data)
+        //         setRoomID(response.data._id)
+        //         setSuccess(true)
+        //         setShowModal(false)
+        //     })
+        //     .catch(function(error) {
+        //         console.log(error.response)
+        //     })
+        socket.emit("roomCreated", room, storedUser)
+        setSuccess(true)
     }
 
     if (success) {
-        socket.emit("userJoined", storedUser, room)
-        return window.location.href = `/rooms/${roomID}`
+        socket.on("roomCreated", (room) => {
+            return window.location.href = `/rooms/${room._id}`
+        })
     }
 
     return (
