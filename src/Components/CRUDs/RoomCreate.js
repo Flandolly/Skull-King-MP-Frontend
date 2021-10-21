@@ -8,9 +8,11 @@ import {deepOrange} from "@mui/material/colors";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 import {SocketContext} from "../../context/socket"
+import {useHistory} from "react-router-dom"
 import axios from "axios";
+import {Redirect} from "react-router-dom";
 
-function RoomCreate({setShowModal}) {
+function RoomCreate() {
 
     const socket = useContext(SocketContext)
     const storedUser = JSON.parse(localStorage.getItem("user"))
@@ -18,6 +20,7 @@ function RoomCreate({setShowModal}) {
     const [success, setSuccess] = useState(false)
     const [roomID, setRoomID] = useState("")
     const [roomPublic, setRoomPublic] = useState(true)
+    const history = useHistory()
 
     const theme = createTheme({
         palette: {
@@ -35,9 +38,9 @@ function RoomCreate({setShowModal}) {
         }
     }));
 
-    useEffect(() => {
-        console.log(storedUser)
-    }, [storedUser])
+    // useEffect(() => {
+    //     console.log(storedUser)
+    // }, [storedUser])
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -50,30 +53,14 @@ function RoomCreate({setShowModal}) {
             owner: storedUser._id
         }
 
-        // axios.post("api/rooms/new", {
-        //     name: data.get("title"),
-        //     maxPlayers: data.get("maxPlayers"),
-        //     isPublic: roomPublic,
-        //     owner: storedUser._id
-        // })
-        //     .then(function (response) {
-        //         console.log(response)
-        //         socket.emit("roomCreated", response.data)
-        //         setRoom(response.data)
-        //         setRoomID(response.data._id)
-        //         setSuccess(true)
-        //         setShowModal(false)
-        //     })
-        //     .catch(function(error) {
-        //         console.log(error.response)
-        //     })
-        socket.emit("roomCreated", room, storedUser)
+        socket.emit("roomCreated", room)
         setSuccess(true)
     }
 
     if (success) {
         socket.on("roomCreated", (room) => {
-            return window.location.href = `/rooms/${room._id}`
+            localStorage.setItem("r_id", room._id)
+            history.push(`/rooms/${room.id}`)
         })
     }
 

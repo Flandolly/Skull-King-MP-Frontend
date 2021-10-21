@@ -5,11 +5,13 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import {SocketContext} from "../../context/socket"
 import Container from "@mui/material/Container";
-import {Avatar} from "@mui/material";
+import {Avatar, CardContent, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {deepOrange} from "@mui/material/colors";
+import {deepOrange, red} from "@mui/material/colors";
 import {Redirect} from "react-router-dom";
 import Button from "@mui/material/Button";
+import {styled} from "@mui/material/styles";
+import Card from "@mui/material/Card";
 
 function RoomShow(props) {
 
@@ -17,10 +19,19 @@ function RoomShow(props) {
     const [room, setRoom] = useState(null)
     const storedUser = JSON.parse(localStorage.getItem("user"))
 
+    const RoomButton = styled(Button)(({theme}) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        padding: "10px",
+        "&:hover": {
+            backgroundColor: red[700],
+        }
+    }));
+
 
     useEffect(() => {
-        socket.emit("syncRoom", props.match.url.split("/")[2])
-        console.log(props.match.url.split("/")[2])
+        socket.emit("syncRoom", localStorage.getItem("r_id"))
+        //console.log(props.match.url.split("/")[2])
     }, [props.match.url, socket])
 
     useEffect(() => {
@@ -33,12 +44,17 @@ function RoomShow(props) {
     if (room) {
         return (
             <Container component={"main"}>
-                <Box sx={{
-                    width: "65vw",
-                    height: "50vh"
-                }}>
+                <Grid
+                    container
+                    sx={{
+                        width: "95vw",
+                        height: "60vh"
+                    }}
+                    direction={"row"}
+                >
                     <Grid
                         container
+                        width={"80%"}
                         direction={"row"}
                         justifyContent={"space-evenly"}
                         flexWrap={"wrap"}
@@ -57,16 +73,52 @@ function RoomShow(props) {
                                 </Grid>
                             )
                         })}
-                        <Link to={"/lobby"}>
-                            <Button onClick={() => {
-                                socket.emit("userLeft", room, storedUser)
-                                socket.emit("syncRoom", props.match.url.split("/")[2])
-                            }}
-                                    variant={"filled"}>Leave
-                            </Button>
-                        </Link>
                     </Grid>
-                </Box>
+                    <Grid
+                        container
+                        direction={"row"}
+                        width="19vw">
+                        <Grid item xs={12}>
+                            <Link to={"/lobby"}>
+                                <RoomButton fullWidth onClick={() => {
+                                    socket.emit("userLeft", room, storedUser)
+                                    socket.emit("syncRoom", localStorage.getItem("r_id"))
+                                }}
+                                        variant={"filled"}>Leave
+                                </RoomButton>
+                            </Link>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Link to={"/lobby"}>
+                                <RoomButton fullWidth onClick={() => {
+                                    socket.emit("userLeft", room, storedUser)
+                                    socket.emit("syncRoom", localStorage.getItem("r_id"))
+                                }}
+                                        variant={"filled"}>Leave
+                                </RoomButton>
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid
+                    container
+                    width="95vw"
+                    height={"25vh"}
+                    sx={{
+                        mt: 3
+                    }}
+                >
+                    <Grid item xs={12}>
+                        <Card sx={{
+                            height: "20vh"
+                        }}>
+                            <CardContent>
+                                Box
+                            </CardContent>
+                        </Card>
+                        <TextField fullWidth variant={"filled"} placeholder={"Type here..."}/>
+                    </Grid>
+                </Grid>
             </Container>
         )
     } else {
