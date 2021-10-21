@@ -22,16 +22,16 @@ function RoomLobby() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
         width: "80vw",
         bgcolor: brown[300],
-        border: '2px solid #000',
+        border: "2px solid #000",
         boxShadow: 24,
         p: 4,
-    }
+    };
 
     const NewRoomButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(red[500]),

@@ -5,19 +5,19 @@ function SignUpSuccess(props) {
 
 
     useEffect(() => {
-        const search = props.location.search
-        const userData = new URLSearchParams(search)
+        const search = props.location.search;
+        const userData = new URLSearchParams(search);
         axios.post("api/signin", {
             email: userData.get("email"),
             password: userData.get("password"),
         })
             .then(function (response) {
-                localStorage.setItem("userToken", response.data.token)
+                localStorage.setItem("userToken", response.data.token);
             });
     }, [props]);
 
     if (localStorage.getItem("userToken") !== undefined) {
-        return window.location.href = `/lobby`
+        return window.location.href = "/lobby";
     }
 
     return (

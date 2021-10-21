@@ -1,6 +1,6 @@
 import React, {useState, createContext, useMemo} from "react";
 
-export const UserContext = createContext()
+export const UserContext = createContext();
 export const UserProvider = (props) => {
     const [user, setUser] = useState({
         _id: "",
@@ -8,13 +8,13 @@ export const UserProvider = (props) => {
         lastName: "",
         email: "",
         username: "",
-    })
+    });
 
-    const providerValue = useMemo(() => ({user, setUser}), [user, setUser])
+    const providerValue = useMemo(() => ({user, setUser}), [user, setUser]);
 
     return (
         <UserContext.Provider value={providerValue}>
             {props.children}
         </UserContext.Provider>
-    )
-}
+    );
+};

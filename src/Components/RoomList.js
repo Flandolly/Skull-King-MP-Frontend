@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
-import {SocketContext} from "../context/socket"
+import {SocketContext} from "../context/socket";
 
 function RoomList({showPrivate, showFull}) {
     const [roomList, setRoomList] = useState([]);
@@ -25,20 +25,20 @@ function RoomList({showPrivate, showFull}) {
                 } else {
                     setRoomList(response.data);
                 }
-            })
+            });
     }, [showPrivate, showFull]);
 
     useEffect(() => {
         socket.on("roomList", (rooms) => {
-            setRoomList(rooms)
-        })
-    }, [socket])
+            setRoomList(rooms);
+        });
+    }, [socket]);
 
     return roomList.map((room, idx) => {
         return (
             <Link onClick={() => {
-                localStorage.setItem("r_id", room._id)
-                socket.emit("userJoined", JSON.parse(localStorage.getItem("user")), room)
+                localStorage.setItem("r_id", room._id);
+                socket.emit("userJoined", JSON.parse(localStorage.getItem("user")), room);
             }}
                   to={`/rooms/${room.id}`} key={idx}>
                 <Box sx={{

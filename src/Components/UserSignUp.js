@@ -26,7 +26,7 @@ function UserSignUp() {
     const [errorText, setErrorText] = useState("");
     const [userData, setUserData] = useState(null);
     const fields = [email, fname, lname, username, password];
-    const {user, setUser} = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext);
 
     const theme = createTheme({
         palette: {
@@ -47,7 +47,7 @@ function UserSignUp() {
             password: data.get("password")
         })
             .then(function (response) {
-                console.log(response)
+                console.log(response);
                 setError(false);
                 setUserData({
                     email: response.data.email,
@@ -59,7 +59,7 @@ function UserSignUp() {
                     lastName: response.data.lastName,
                     email: response.data.email,
                     username: response.data.username
-                })
+                });
 
             })
             .catch(function (error) {
@@ -106,7 +106,7 @@ function UserSignUp() {
     }
 
     if (userData) {
-        localStorage.setItem("user", JSON.stringify(user))
+        localStorage.setItem("user", JSON.stringify(user));
         return window.location.href = `/success?email=${userData.email}&password=${userData.password}`;
     }
 

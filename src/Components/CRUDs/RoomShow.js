@@ -1,7 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from "react";
 import Grid from "@mui/material/Grid";
 import {Link} from "react-router-dom";
-import {SocketContext} from "../../context/socket"
+import {SocketContext} from "../../context/socket";
 import Container from "@mui/material/Container";
 import {Avatar} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -12,9 +12,9 @@ import ChatBox from "../ChatBox";
 
 function RoomShow(props) {
 
-    const socket = useContext(SocketContext)
-    const [room, setRoom] = useState(null)
-    const storedUser = JSON.parse(localStorage.getItem("user"))
+    const socket = useContext(SocketContext);
+    const [room, setRoom] = useState(null);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
     const LeaveButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(red[500]),
@@ -35,12 +35,12 @@ function RoomShow(props) {
     }));
 
     useEffect(() => {
-        socket.removeAllListeners("syncRoom")
+        socket.removeAllListeners("syncRoom");
         socket.on("syncRoom", (room) => {
             //console.log(room)
-            setRoom(room)
-        })
-    }, [socket])
+            setRoom(room);
+        });
+    }, [socket]);
 
     if (room) {
         return (
@@ -72,7 +72,7 @@ function RoomShow(props) {
                                         {storedUser.username}
                                     </Typography>
                                 </Grid>
-                            )
+                            );
                         })}
                     </Grid>
                     <Grid
@@ -82,7 +82,7 @@ function RoomShow(props) {
                         <Grid item xs={12}>
                             <Link to={"/lobby"}>
                                 <LeaveButton fullWidth onClick={() => {
-                                    socket.emit("userLeft", room, storedUser)
+                                    socket.emit("userLeft", room, storedUser);
                                 }}
                                         variant={"filled"}>Leave
                                 </LeaveButton>
@@ -101,12 +101,12 @@ function RoomShow(props) {
                 </Grid>
                 <ChatBox/>
             </Container>
-        )
+        );
     } else {
         return (
             <div>Error</div>
-        )
+        );
     }
 }
 
-export default RoomShow
+export default RoomShow;

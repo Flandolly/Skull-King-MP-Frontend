@@ -6,7 +6,7 @@ import SignUpSuccess from "./Components/auxiliary/SignUpSuccess";
 import UserLogIn from "./Components/UserLogIn";
 import RoomLobby from "./Components/RoomLobby";
 import {SocketContext, socket} from "./context/socket";
-import {UserProvider} from "./context/GlobalStates"
+import {UserProvider} from "./context/GlobalStates";
 import RoomShow from "./Components/CRUDs/RoomShow";
 
 

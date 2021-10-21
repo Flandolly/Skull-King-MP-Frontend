@@ -7,16 +7,16 @@ import Container from "@mui/material/Container";
 import {deepOrange} from "@mui/material/colors";
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
-import {SocketContext} from "../../context/socket"
-import {useHistory} from "react-router-dom"
+import {SocketContext} from "../../context/socket";
+import {useHistory} from "react-router-dom";
 
 function RoomCreate() {
 
-    const socket = useContext(SocketContext)
-    const storedUser = JSON.parse(localStorage.getItem("user"))
-    const [success, setSuccess] = useState(false)
-    const [roomPublic, setRoomPublic] = useState(true)
-    const history = useHistory()
+    const socket = useContext(SocketContext);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const [success, setSuccess] = useState(false);
+    const [roomPublic, setRoomPublic] = useState(true);
+    const history = useHistory();
 
     const theme = createTheme({
         palette: {
@@ -24,7 +24,7 @@ function RoomCreate() {
                 main: deepOrange[900]
             }
         }
-    })
+    });
     const SubmitButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(deepOrange[500]),
         backgroundColor: deepOrange[700],
@@ -39,25 +39,25 @@ function RoomCreate() {
     // }, [storedUser])
 
     function handleSubmit(event) {
-        event.preventDefault()
-        const data = new FormData(event.currentTarget)
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
         const room = {
             name: data.get("title"),
             players: [storedUser.username],
             maxPlayers: data.get("maxPlayers"),
             isPublic: roomPublic,
             owner: storedUser._id
-        }
+        };
 
-        socket.emit("roomCreated", room)
-        setSuccess(true)
+        socket.emit("roomCreated", room);
+        setSuccess(true);
     }
 
     if (success) {
         socket.on("roomCreated", (room) => {
-            localStorage.setItem("r_id", room._id)
-            history.push(`/rooms/${room.id}`)
-        })
+            localStorage.setItem("r_id", room._id);
+            history.push(`/rooms/${room.id}`);
+        });
     }
 
     return (
@@ -101,7 +101,7 @@ function RoomCreate() {
                 </Box>
             </Container>
         </ThemeProvider>
-    )
+    );
 }
 
 export default RoomCreate;
