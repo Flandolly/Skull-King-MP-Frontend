@@ -9,16 +9,12 @@ import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 import {SocketContext} from "../../context/socket"
 import {useHistory} from "react-router-dom"
-import axios from "axios";
-import {Redirect} from "react-router-dom";
 
 function RoomCreate() {
 
     const socket = useContext(SocketContext)
     const storedUser = JSON.parse(localStorage.getItem("user"))
-    const [room, setRoom] = useState(null)
     const [success, setSuccess] = useState(false)
-    const [roomID, setRoomID] = useState("")
     const [roomPublic, setRoomPublic] = useState(true)
     const history = useHistory()
 

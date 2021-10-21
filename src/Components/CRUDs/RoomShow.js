@@ -1,17 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
-import axios from "axios";
 import {SocketContext} from "../../context/socket"
 import Container from "@mui/material/Container";
-import {Avatar, CardContent, TextField} from "@mui/material";
+import {Avatar} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {deepOrange, red} from "@mui/material/colors";
-import {Redirect} from "react-router-dom";
+import {deepOrange, red, green} from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
-import Card from "@mui/material/Card";
 import ChatBox from "../ChatBox";
 
 function RoomShow(props) {
@@ -20,7 +16,7 @@ function RoomShow(props) {
     const [room, setRoom] = useState(null)
     const storedUser = JSON.parse(localStorage.getItem("user"))
 
-    const RoomButton = styled(Button)(({theme}) => ({
+    const LeaveButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(red[500]),
         backgroundColor: red[500],
         padding: "10px",
@@ -29,18 +25,29 @@ function RoomShow(props) {
         }
     }));
 
+    const StartButton = styled(Button)(({theme}) => ({
+        color: theme.palette.getContrastText(green[500]),
+        backgroundColor: green[500],
+        padding: "10px",
+        "&:hover": {
+            backgroundColor: green[700],
+        }
+    }));
 
-    useEffect(() => {
-        socket.emit("syncRoom", localStorage.getItem("r_id"))
-        //console.log(props.match.url.split("/")[2])
-    }, [props.match.url, socket])
 
+    // useEffect(() => {
+    //
+    // }, [props.match.url, socket])
+    //
     useEffect(() => {
         socket.on("syncRoom", (room) => {
             console.log(room)
             setRoom(room)
         })
-    }, [socket])
+    }, [])
+
+    // socket.emit("syncRoom", localStorage.getItem("r_id"))
+    //console.log(props.match.url.split("/")[2])
 
     if (room) {
         return (
@@ -81,22 +88,20 @@ function RoomShow(props) {
                         width="19vw">
                         <Grid item xs={12}>
                             <Link to={"/lobby"}>
-                                <RoomButton fullWidth onClick={() => {
+                                <LeaveButton fullWidth onClick={() => {
                                     socket.emit("userLeft", room, storedUser)
-                                    socket.emit("syncRoom", localStorage.getItem("r_id"))
                                 }}
                                         variant={"filled"}>Leave
-                                </RoomButton>
+                                </LeaveButton>
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link to={"/lobby"}>
-                                <RoomButton fullWidth onClick={() => {
-                                    socket.emit("userLeft", room, storedUser)
-                                    socket.emit("syncRoom", localStorage.getItem("r_id"))
+                            <Link to={"#"}>
+                                <StartButton fullWidth onClick={() => {
+
                                 }}
-                                        variant={"filled"}>Leave
-                                </RoomButton>
+                                        variant={"filled"}>Start Game
+                                </StartButton>
                             </Link>
                         </Grid>
                     </Grid>

@@ -1,8 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import {CardContent, List, Paper, TextField} from "@mui/material";
-import Card from "@mui/material/Card";
+import {List, Paper, TextField} from "@mui/material";
 import {ThemeProvider} from "@mui/material/styles"
 import {createTheme} from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -17,17 +15,15 @@ function ChatBox() {
 
     })
 
-    useEffect(() => {
-        socket.on("message", (message) => {
-            console.log("Chat message")
-            const chatbox = document.getElementById("chat")
-            const msg = document.createElement("li")
-            msg.innerText = message
-            chatbox.appendChild(msg)
-            const chat = document.getElementById("chatbox")
-            chat.scrollTop = chat.scrollHeight - chat.clientHeight
-        })
-    }, [])
+    socket.on("message", (message) => {
+        console.log("Chat message")
+        const chatbox = document.getElementById("chat")
+        const msg = document.createElement("li")
+        msg.innerText = message
+        chatbox.appendChild(msg)
+        const chat = document.getElementById("chatbox")
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight
+    })
 
     function handleSubmit(event) {
         //console.log(window.location.href.split("/")[4])
