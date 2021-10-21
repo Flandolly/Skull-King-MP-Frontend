@@ -21,6 +21,7 @@ function ChatBox() {
             console.log("Chat message")
             const chatbox = document.getElementById("chat")
             const msg = document.createElement("li")
+            msg.style.paddingLeft = "10px"
             msg.innerText = message
             chatbox.appendChild(msg)
             const chat = document.getElementById("chatbox")

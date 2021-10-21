@@ -37,7 +37,7 @@ function RoomShow(props) {
     useEffect(() => {
         socket.removeAllListeners("syncRoom")
         socket.on("syncRoom", (room) => {
-            console.log(room)
+            //console.log(room)
             setRoom(room)
         })
     }, [socket])
@@ -89,7 +89,7 @@ function RoomShow(props) {
                             </Link>
                         </Grid>
                         <Grid item xs={12}>
-                            <Link to={"#"}>
+                            <Link to={`/rooms/${room.id}/play`}>
                                 <StartButton fullWidth onClick={() => {
                                     // socket.emit("startGame")
                                 }}
