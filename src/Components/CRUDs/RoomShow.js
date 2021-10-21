@@ -12,6 +12,7 @@ import {Redirect} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import Card from "@mui/material/Card";
+import ChatBox from "../ChatBox";
 
 function RoomShow(props) {
 
@@ -100,25 +101,7 @@ function RoomShow(props) {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid
-                    container
-                    width="95vw"
-                    height={"25vh"}
-                    sx={{
-                        mt: 3
-                    }}
-                >
-                    <Grid item xs={12}>
-                        <Card sx={{
-                            height: "20vh"
-                        }}>
-                            <CardContent>
-                                Box
-                            </CardContent>
-                        </Card>
-                        <TextField fullWidth variant={"filled"} placeholder={"Type here..."}/>
-                    </Grid>
-                </Grid>
+                <ChatBox/>
             </Container>
         )
     } else {
