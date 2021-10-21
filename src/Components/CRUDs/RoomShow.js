@@ -34,20 +34,13 @@ function RoomShow(props) {
         }
     }));
 
-
-    // useEffect(() => {
-    //
-    // }, [props.match.url, socket])
-    //
     useEffect(() => {
+        socket.removeAllListeners("syncRoom")
         socket.on("syncRoom", (room) => {
             console.log(room)
             setRoom(room)
         })
-    }, [])
-
-    // socket.emit("syncRoom", localStorage.getItem("r_id"))
-    //console.log(props.match.url.split("/")[2])
+    }, [socket])
 
     if (room) {
         return (
@@ -98,7 +91,7 @@ function RoomShow(props) {
                         <Grid item xs={12}>
                             <Link to={"#"}>
                                 <StartButton fullWidth onClick={() => {
-
+                                    // socket.emit("startGame")
                                 }}
                                         variant={"filled"}>Start Game
                                 </StartButton>

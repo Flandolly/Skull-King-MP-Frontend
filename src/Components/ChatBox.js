@@ -15,14 +15,17 @@ function ChatBox() {
 
     })
 
-    socket.on("message", (message) => {
-        console.log("Chat message")
-        const chatbox = document.getElementById("chat")
-        const msg = document.createElement("li")
-        msg.innerText = message
-        chatbox.appendChild(msg)
-        const chat = document.getElementById("chatbox")
-        chat.scrollTop = chat.scrollHeight - chat.clientHeight
+    useEffect(() => {
+        socket.removeAllListeners("message")
+        socket.on("message", (message) => {
+            console.log("Chat message")
+            const chatbox = document.getElementById("chat")
+            const msg = document.createElement("li")
+            msg.innerText = message
+            chatbox.appendChild(msg)
+            const chat = document.getElementById("chatbox")
+            chat.scrollTop = chat.scrollHeight - chat.clientHeight
+        })
     })
 
     function handleSubmit(event) {
