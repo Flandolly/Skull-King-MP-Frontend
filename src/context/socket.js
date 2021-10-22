@@ -1,7 +1,7 @@
 import React from "react";
 import socketio from "socket.io-client";
-import {APIURL} from "../config/config";
 
+const ENDPOINT = "https://sk-online-server.herokuapp.com";
 
-export const socket = socketio.connect(APIURL);
+export const socket = socketio.connect(ENDPOINT);
 export const SocketContext = React.createContext();
