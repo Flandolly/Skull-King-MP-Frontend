@@ -26,7 +26,7 @@ function RoomList({showPrivate, showFull}) {
                     setRoomList(response.data);
                 }
             });
-        socket.removeAllListeners("roomList")
+        socket.removeAllListeners("roomList");
         socket.on("roomList", (rooms) => {
             setRoomList(rooms);
         });
