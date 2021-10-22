@@ -12,6 +12,7 @@ import {brown} from "@mui/material/colors";
 import axios from "axios";
 import {useState} from "react";
 import Alert from "@mui/material/Alert";
+import {APIURL} from "../config/config";
 
 const theme = createTheme({
     palette: {
@@ -33,7 +34,7 @@ function UserLogIn() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        axios.post("/api/signin", {
+        axios.post(`${APIURL}/signin`, {
             email: data.get("email"),
             password: data.get("password"),
         })

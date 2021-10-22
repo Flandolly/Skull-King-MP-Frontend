@@ -8,13 +8,14 @@ import {Link} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {SocketContext} from "../context/socket";
+// import {APIURL} from "../config/config";
 
 function RoomList({showPrivate, showFull}) {
     const [roomList, setRoomList] = useState([]);
     const socket = useContext(SocketContext);
 
     useEffect(() => {
-        axios.get("/api/rooms")
+        axios.get("api/rooms")
             .then(function (response) {
                 if (!showPrivate) {
                     const filtered = response.data.filter((room) => room.isPublic === true);
@@ -25,6 +26,9 @@ function RoomList({showPrivate, showFull}) {
                 } else {
                     setRoomList(response.data);
                 }
+            })
+            .catch(function(error) {
+                console.log(error);
             });
         socket.removeAllListeners("roomList");
         socket.on("roomList", (rooms) => {

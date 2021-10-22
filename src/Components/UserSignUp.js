@@ -11,6 +11,7 @@ import {brown} from "@mui/material/colors";
 import Alert from "@mui/material/Alert";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {UserContext} from "../context/GlobalStates";
+import {APIURL} from "../config/config";
 
 const axios = require("axios");
 
@@ -39,7 +40,7 @@ function UserSignUp() {
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        axios.post("api/signup", {
+        axios.post(`${APIURL}/signup`, {
             firstName: data.get("firstName"),
             lastName: data.get("lastName"),
             email: data.get("email"),
