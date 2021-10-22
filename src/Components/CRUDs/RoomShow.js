@@ -42,6 +42,13 @@ function RoomShow(props) {
         });
     }, [socket]);
 
+    useEffect(() => {
+        socket.removeAllListeners("redirectToGameRoom")
+        socket.on("redirectToGameRoom", () => {
+            props.history.push(`/rooms/${room.id}/play`)
+        })
+    })
+
     if (room) {
         return (
             <Container component={"main"}>
@@ -91,7 +98,7 @@ function RoomShow(props) {
                         <Grid item xs={12}>
                             <Link to={`/rooms/${room.id}/play`}>
                                 <StartButton fullWidth onClick={() => {
-                                    // socket.emit("startGame")
+                                    socket.emit("startGame", room)
                                 }}
                                         variant={"filled"}>Start Game
                                 </StartButton>

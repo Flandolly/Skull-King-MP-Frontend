@@ -26,13 +26,12 @@ function RoomList({showPrivate, showFull}) {
                     setRoomList(response.data);
                 }
             });
-    }, [showPrivate, showFull]);
-
-    useEffect(() => {
+        socket.removeAllListeners("roomList")
         socket.on("roomList", (rooms) => {
             setRoomList(rooms);
         });
-    }, [socket]);
+    }, [showPrivate, showFull, socket]);
+
 
     return roomList.map((room, idx) => {
         return (

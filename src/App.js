@@ -8,6 +8,7 @@ import RoomLobby from "./Components/RoomLobby";
 import {SocketContext, socket} from "./context/socket";
 import {UserProvider} from "./context/GlobalStates";
 import RoomShow from "./Components/CRUDs/RoomShow";
+import GameRoom from "./Game/GameRoom";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                     <Route path={"/success"} exact render={(props) => <SignUpSuccess {...props} />}/>
                     <Route path={"/lobby"} exact component={RoomLobby}/>
                     <Route path={"/rooms/:id"} exact component={RoomShow}/>
+                    <Route path={"/rooms/:id/play"} exact component={GameRoom}/>
                 </div>
             </SocketContext.Provider>
         </UserProvider>
