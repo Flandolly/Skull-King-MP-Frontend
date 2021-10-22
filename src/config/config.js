@@ -1,0 +1,1 @@
+export const APIURL = window.location.name === "localhost" ? "http://localhost:8080/api" : "deployment url"

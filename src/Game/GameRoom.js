@@ -1,11 +1,17 @@
-import React, {useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import {SocketContext} from "../context/socket";
 
 function GameRoom() {
 
     const [gameState, setGameState] = useState(null)
+    const socket = useContext(SocketContext);
+
+    useEffect(() => {
+        socket.emit("initializeGame")
+    })
 
     return (
         <Container>
