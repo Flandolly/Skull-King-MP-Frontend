@@ -2,7 +2,6 @@
   "name": "skull-king-mp-frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://sk-online-server.herokuapp.com",
   "engines": {
     "node": "^16.6.3",
     "npm": "^7.21.0"
