@@ -74,9 +74,9 @@ function RoomShow(props) {
                                         bgcolor: deepOrange[500],
                                         width: 100,
                                         height: 100
-                                    }}>{storedUser.username[0].toUpperCase()}</Avatar>
+                                    }}>{player[0].toUpperCase()}</Avatar>
                                     <Typography>
-                                        {storedUser.username}
+                                        {player}
                                     </Typography>
                                 </Grid>
                             );
