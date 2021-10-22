@@ -1,1 +1,1 @@
-export const APIURL = window.location.name === "localhost" ? "http://localhost:8080/api" : "deployment url"
+export const APIURL = window.location.name === "localhost" ? "http://localhost:8080/api" : "https://sk-online-server.herokuapp.com/api"
