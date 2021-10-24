@@ -13,11 +13,9 @@ import Button from "@mui/material/Button";
 function GameRoom() {
 
     const [gameState, setGameState] = useState(null);
-    const [graveyard, setGraveyard] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [bidMade, setBidMade] = useState(false);
     const [lastCard, setLastCard] = useState(null);
-    const [playedCard, setPlayedCard] = useState(null);
     const socket = useContext(SocketContext);
 
     const SubmitButton = styled(Button)(({theme}) => ({
@@ -48,7 +46,7 @@ function GameRoom() {
         socket.removeAllListeners("gameStarted");
         socket.on("gameStarted", (data) => {
             setGameState(data[0]);
-            setGraveyard(data[1]);
+            // setGraveyard(data[1]);
         });
 
         if (!bidMade) {
@@ -68,68 +66,65 @@ function GameRoom() {
             bid: parseInt(data.get("bid").toString())
         });
 
-        console.log(gameState);
+        socket.emit("sendBid", gameState.name, parseInt(data.get("bid").toString()), localStorage.getItem("r_id"), localStorage.getItem("socketID"));
+
     }
 
-    function handleClickedCard() {
+    function handleClickedCard(event) {
         if ([...document.getElementById("game-card").classList].includes("not-clickable")) {
             return;
         } else {
             console.log("You played a card");
-            setPlayedCard(document.getElementById("game-card").innerText.split("\n\n"));
-        }
-        //console.log(playedCard);
-    }
+            const playedCard = event.currentTarget.innerText.split("\n\n");
+            console.log(gameState);
 
-    if (gameState) {
-        socket.removeAllListeners("getBid");
-        socket.on("getBid", () => {
-            socket.emit("sendBid", gameState, localStorage.getItem("r_id"), localStorage.getItem("socketID"));
-        });
-
-        socket.removeAllListeners("playerCanPlay");
-        socket.on("playerCanPlay", () => {
-            document.getElementById("game-card").classList.remove("not-clickable");
-        });
-
-        socket.removeAllListeners("getPlayedCard");
-        socket.on("getPlayedCard", (data) => {
-            console.log(playedCard);
             const cards = document.querySelectorAll(".card");
 
             for (const card of cards) {
                 card.classList.add("not-clickable");
             }
 
-            console.log(data[0]);
-            const findCardIndex = data[0].hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
-            //console.log(findCardIndex);
-            const removedCard = data[0].hand.splice(findCardIndex, 1);
-            //console.log(data[0].hand);
+            const findCardIndex = gameState.hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
+            gameState.hand.splice(findCardIndex, 1);
+            console.log(gameState);
             setGameState({
                 ...gameState,
-                hand: data[0].hand,
+                hand: gameState.hand
             });
+
             setLastCard(playedCard.join(" "));
-            setGraveyard(graveyard.concat({suit: playedCard[0], value: playedCard[1]}));
 
-            socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), removedCard);
-            console.log(graveyard);
+            socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), {suit: playedCard[0], value: playedCard[1]});
+        }
+        //console.log(playedCard);
+    }
 
+    if (gameState) {
+
+        socket.removeAllListeners("playerCanPlay");
+        socket.on("playerCanPlay", () => {
+            const cards = document.querySelectorAll(".card");
+
+            for (const card of cards) {
+                card.classList.remove("not-clickable");
+            }
         });
 
         socket.removeAllListeners("updatePlayedCard");
         socket.on("updatePlayedCard", (card) => {
             //console.log(card);
-            setLastCard(`${card[0].suit} ${card[0].value}`);
+            setLastCard(`${card.suit} ${card.value}`);
         });
 
-        socket.removeAllListeners("trickFinished");
-        socket.on("trickFinished", () => {
-            console.log(graveyard);
-            socket.emit("getTrickWinner", graveyard);
+        socket.removeAllListeners("playerWonTrick");
+        socket.on("playerWonTrick", (winner) => {
+           console.log("Winner: ", winner);
         });
 
+        socket.removeAllListeners("showLeaderboard");
+        socket.on("showLeaderboard", (players) => {
+            console.log(players);
+        });
     }
 
     if (gameState) {
@@ -213,7 +208,7 @@ function GameRoom() {
                                 <Grid
                                     direction={"column"}
                                     justifyContent={"center"}
-                                    onClick={() => handleClickedCard()}
+                                    onClick={(e) => handleClickedCard(e)}
                                     id={"game-card"}
                                     className="card not-clickable"
                                     sx={{
