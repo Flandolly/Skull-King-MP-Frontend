@@ -42,7 +42,7 @@ function ChatBox() {
             <div>
                 <Grid
                     container
-                    width="95vw"
+                    width="100%"
                     height={"25vh"}
                     sx={{
                         mt: 3
@@ -54,7 +54,8 @@ function ChatBox() {
                             height: "20vh",
                             border: "2px solid orange",
                             overflowY: "scroll",
-                            overflow: "auto"
+                            overflow: "auto",
+                            mb: "10px"
                         }}>
                             <List id="chat">
 

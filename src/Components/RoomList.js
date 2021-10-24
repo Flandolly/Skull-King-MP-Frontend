@@ -47,7 +47,6 @@ function RoomList({showPrivate, showFull}) {
                 return <Redirect to={"/lobby"}/>;
             }
         }
-
     }
 
 

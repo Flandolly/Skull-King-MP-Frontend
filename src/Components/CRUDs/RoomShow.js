@@ -2,13 +2,13 @@ import React, {useContext, useEffect, useState} from "react";
 import Grid from "@mui/material/Grid";
 import {Link} from "react-router-dom";
 import {SocketContext} from "../../context/socket";
-import Container from "@mui/material/Container";
 import {Avatar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {deepOrange, red, green} from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import ChatBox from "../ChatBox";
+import Box from "@mui/material/Box";
 
 function RoomShow(props) {
 
@@ -51,21 +51,26 @@ function RoomShow(props) {
 
     if (room) {
         return (
-            <Container component={"main"}>
+            <Box component={"main"} sx={{
+                mx: "50px",
+            }}>
                 <Grid
                     container
                     sx={{
-                        width: "95vw",
-                        height: "60vh"
+                        width: "100%",
+                        height: "60vh",
                     }}
                     direction={"row"}
                 >
                     <Grid
                         container
-                        width={"80%"}
+                        width={"50%"}
                         direction={"row"}
                         justifyContent={"space-evenly"}
                         flexWrap={"wrap"}
+                        sx={{
+                            my: "30px"
+                        }}
                     >
                         {room.players.map((player, idx) => {
                             return (
@@ -85,8 +90,10 @@ function RoomShow(props) {
                     <Grid
                         container
                         direction={"row"}
-                        width="19vw">
-                        <Grid item xs={12}>
+                        width="50%">
+                        <Grid item xs={12} sx={{
+                            my: "30px"
+                        }}>
                             <Link to={"/lobby"}>
                                 <LeaveButton fullWidth onClick={() => {
                                     socket.emit("userLeft", room, storedUser);
@@ -107,7 +114,7 @@ function RoomShow(props) {
                     </Grid>
                 </Grid>
                 <ChatBox/>
-            </Container>
+            </Box>
         );
     } else {
         return (
