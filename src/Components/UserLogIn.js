@@ -2,7 +2,7 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -49,13 +49,37 @@ function UserLogIn() {
                 setPassword("");
                 setEmail("");
             });
+
+        axios.get(`${APIURL}/`)
+            .then(function (response) {
+                const user = response.data.find((user) => user.email === data.get("email"));
+                return axios.get(`${APIURL}/signin/${user._id}`, {
+                    params: {
+                        id: user._id,
+                    }
+                })
+                    .then(function (res) {
+                        console.log(res.data);
+                        localStorage.setItem("user", JSON.stringify(res.data));
+                    })
+                    .catch(function (err) {
+                        console.log(err.response);
+                    });
+            })
+            .then(() => {
+                localStorage.setItem("userToken", token);
+                return window.location.href = "/lobby";
+            })
+            .catch(function (error) {
+                console.log(error.response);
+            });
     }
 
-    if (token) {
-        return <Redirect to={{
-            pathname: "/lobby",
-            state: {token}
-        }}/>;
+    console.log(token);
+
+    if (localStorage.getItem("user") && token) {
+        localStorage.setItem("userToken", token);
+        return window.location.href = "/lobby";
     }
 
     return (

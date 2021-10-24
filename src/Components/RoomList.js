@@ -28,7 +28,7 @@ function RoomList({showPrivate, showFull}) {
                 }
             })
             .catch(function(error) {
-                console.log(error);
+                console.log(error.response);
             });
         socket.removeAllListeners("roomList");
         socket.on("roomList", (rooms) => {
