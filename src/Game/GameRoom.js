@@ -14,6 +14,9 @@ function GameRoom() {
 
     const [gameState, setGameState] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [bidMade, setBidMade] = useState(false);
+    const [lastCard, setLastCard] = useState(null);
+    const [playedCard, setPlayedCard] = useState(null);
     const socket = useContext(SocketContext);
 
     const SubmitButton = styled(Button)(({theme}) => ({
@@ -46,20 +49,18 @@ function GameRoom() {
             setGameState(data[0]);
         });
 
-        setTimeout(() => {
-            setShowModal(true);
-        }, 500);
+        if (!bidMade) {
+            setTimeout(() => {
+                setShowModal(true);
+            }, 500);
+        }
     }, [socket]);
-
-    useEffect(() => {
-
-    }, [socket]);
-
 
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         setShowModal(false);
+        setBidMade(true);
         setGameState({
             ...gameState,
             bid: parseInt(data.get("bid").toString())
@@ -68,11 +69,57 @@ function GameRoom() {
         console.log(gameState);
     }
 
+    function handleClickedCard() {
+        if ([...document.getElementById("game-card").classList].includes("not-clickable")) {
+            return;
+        } else {
+            console.log("You played a card");
+            // document.getElementById("last-played-card").innerHTML = document.getElementById("game-card").innerHTML;
+            setPlayedCard(document.getElementById("game-card").innerText.split("\n\n"));
+            setLastCard(document.getElementById("game-card").innerText);
+        }
+        console.log(playedCard);
+    }
+
     if (gameState) {
         socket.removeAllListeners("getBid");
         socket.on("getBid", () => {
             socket.emit("sendBid", gameState, localStorage.getItem("r_id"));
         });
+
+        socket.removeAllListeners("playerCanPlay");
+        socket.on("playerCanPlay", () => {
+            document.getElementById("game-card").classList.remove("not-clickable");
+        });
+
+        socket.removeAllListeners("getPlayedCard");
+        socket.on("getPlayedCard", (data) => {
+            const cards = document.querySelectorAll(".card");
+
+            for (const card of cards) {
+                card.classList.add("not-clickable");
+            }
+
+            console.log(data[0]);
+            if (playedCard) {
+                const findCardIndex = data[0].hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
+                console.log(findCardIndex);
+                const removedCard = data[0].hand.splice(findCardIndex, 1);
+                console.log(data[0].hand);
+                setGameState({
+                    ...gameState,
+                    hand: data[0].hand
+                });
+
+                socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), removedCard);
+            }
+        });
+
+        socket.removeAllListeners("updatePlayedCard");
+        socket.on("updatePlayedCard", () => {
+            setLastCard(playedCard);
+        });
+
     }
 
     if (gameState) {
@@ -97,7 +144,7 @@ function GameRoom() {
                                         variant={"filled"}
                                         name={"bid"}
                                         type={"number"}
-                                        InputProps={{ inputProps: { min: 0, max: 10 }}}
+                                        InputProps={{inputProps: {min: 0, max: 10}}}
                                         fullWidth
                                         id={"bid"}
                                         label={"Enter bid..."}
@@ -130,14 +177,18 @@ function GameRoom() {
                         }} item>
                             Card Deck
                         </Grid>
-                        <Grid sx={{
-                            height: "200px",
-                            width: "150px",
-                            border: "1px solid black",
-                            margin: "5px",
-                            textAlign: "center"
-                        }} item>
-                            Card Played
+                        <Grid
+                            id={"last-played-card"}
+                            justifyContent={"center"}
+                            direction="column"
+                            sx={{
+                                height: "200px",
+                                width: "150px",
+                                border: "1px solid black",
+                                margin: "5px",
+                                textAlign: "center"
+                            }} container>
+                            {lastCard}
                         </Grid>
                     </Grid>
                     <Grid
@@ -149,13 +200,19 @@ function GameRoom() {
                         }}>
                         {gameState.hand.map((card, idx) => {
                             return (
-                                <Grid sx={{
-                                    height: "200px",
-                                    width: "150px",
-                                    border: "1px solid black",
-                                    margin: "5px",
-                                    textAlign: "center"
-                                }} item key={idx}>
+                                <Grid
+                                    direction={"column"}
+                                    justifyContent={"center"}
+                                    onClick={() => handleClickedCard()}
+                                    id={"game-card"}
+                                    className="card not-clickable"
+                                    sx={{
+                                        height: "200px",
+                                        width: "150px",
+                                        border: "1px solid black",
+                                        margin: "5px",
+                                        textAlign: "center"
+                                    }} container key={idx}>
                                     <Typography>
                                         {card.suit}
                                     </Typography>
