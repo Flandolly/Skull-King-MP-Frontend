@@ -4,7 +4,7 @@ import {CardContent} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {SocketContext} from "../context/socket";
@@ -30,11 +30,25 @@ function RoomList({showPrivate, showFull}) {
             .catch(function(error) {
                 console.log(error.response);
             });
+    }, [showPrivate, showFull, socket]);
+
+    if (roomList.length !== 0) {
+        console.log("Hi");
+        console.log(roomList);
+
         socket.removeAllListeners("roomList");
         socket.on("roomList", (rooms) => {
             setRoomList(rooms);
+            return <Redirect to={"/lobby"}/>;
         });
-    }, [showPrivate, showFull, socket]);
+        for (const room of roomList) {
+            if (room.players.length === 0) {
+                socket.emit("cleanRoomList");
+                return <Redirect to={"/lobby"}/>;
+            }
+        }
+
+    }
 
 
     return roomList.map((room, idx) => {

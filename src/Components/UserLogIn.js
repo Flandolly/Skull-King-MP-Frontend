@@ -76,8 +76,6 @@ function UserLogIn() {
             });
     }
 
-    console.log(token);
-
     if (localStorage.getItem("user") && token) {
         localStorage.setItem("userToken", token);
         return window.location.href = "/lobby";
@@ -125,10 +123,6 @@ function UserLogIn() {
                             id="password"
                             autoComplete="current-password"
                         />
-                        {/*<FormControlLabel*/}
-                        {/*    control={<Checkbox value="remember" color="primary" />}*/}
-                        {/*    label="Remember me"*/}
-                        {/*/>*/}
                         <Button
                             type="submit"
                             fullWidth
