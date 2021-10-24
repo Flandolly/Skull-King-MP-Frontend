@@ -30,6 +30,11 @@ function UserLogIn() {
     const [password, setPassword] = useState("");
     const [errorText, setErrorText] = useState("");
 
+
+    if (localStorage.getItem("userToken")) {
+        return window.location.href = "/lobby";
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -65,10 +70,6 @@ function UserLogIn() {
                     .catch(function (err) {
                         console.log(err.response);
                     });
-            })
-            .then(() => {
-                localStorage.setItem("userToken", token);
-                return window.location.href = "/lobby";
             })
             .catch(function (error) {
                 console.log(error.response);

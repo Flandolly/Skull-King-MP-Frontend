@@ -16,6 +16,10 @@ function Home() {
         }
     }));
 
+    if (localStorage.getItem("userToken")) {
+        return window.location.href = "/lobby";
+    }
+
     return (
         <div className={"main-container d-flex flex-column justify-content-center align-items-center"}>
             <h1 className={"landing-title"}>Skull King Online</h1>

@@ -37,6 +37,10 @@ function UserSignUp() {
         }
     });
 
+    if (localStorage.getItem("userToken")) {
+        return window.location.href = "/lobby";
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
