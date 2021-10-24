@@ -49,6 +49,12 @@ function GameRoom() {
             // setGraveyard(data[1]);
         });
 
+        socket.on("newRoundStarted", (data) => {
+            setGameState(data[0]);
+            setBidMade(false);
+            setShowModal(true);
+        });
+
         if (!bidMade) {
             setTimeout(() => {
                 setShowModal(true);
@@ -94,7 +100,10 @@ function GameRoom() {
 
             setLastCard(playedCard.join(" "));
 
-            socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), {suit: playedCard[0], value: playedCard[1]});
+            socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), {
+                suit: playedCard[0],
+                value: playedCard[1]
+            });
         }
         //console.log(playedCard);
     }
@@ -118,12 +127,19 @@ function GameRoom() {
 
         socket.removeAllListeners("playerWonTrick");
         socket.on("playerWonTrick", (winner) => {
-           console.log("Winner: ", winner);
+            console.log("Winner: ", winner);
+            setLastCard("");
         });
 
         socket.removeAllListeners("showLeaderboard");
         socket.on("showLeaderboard", (players) => {
             console.log(players);
+            setLastCard("");
+        });
+
+        socket.removeAllListeners("gameOver");
+        socket.on("gameOver", () => {
+            console.log("Game is over! thanks for playing~");
         });
     }
 
