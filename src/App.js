@@ -15,6 +15,7 @@ function App() {
 
     useEffect(() => {
         socket.on("connect", () => {
+            localStorage.setItem("socketID", socket.id);
             console.log(socket.id);
         });
     }, []);

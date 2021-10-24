@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 function GameRoom() {
 
     const [gameState, setGameState] = useState(null);
+    const [graveyard, setGraveyard] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [bidMade, setBidMade] = useState(false);
     const [lastCard, setLastCard] = useState(null);
@@ -47,6 +48,7 @@ function GameRoom() {
         socket.removeAllListeners("gameStarted");
         socket.on("gameStarted", (data) => {
             setGameState(data[0]);
+            setGraveyard(data[1]);
         });
 
         if (!bidMade) {
@@ -74,17 +76,15 @@ function GameRoom() {
             return;
         } else {
             console.log("You played a card");
-            // document.getElementById("last-played-card").innerHTML = document.getElementById("game-card").innerHTML;
             setPlayedCard(document.getElementById("game-card").innerText.split("\n\n"));
-            setLastCard(document.getElementById("game-card").innerText);
         }
-        console.log(playedCard);
+        //console.log(playedCard);
     }
 
     if (gameState) {
         socket.removeAllListeners("getBid");
         socket.on("getBid", () => {
-            socket.emit("sendBid", gameState, localStorage.getItem("r_id"));
+            socket.emit("sendBid", gameState, localStorage.getItem("r_id"), localStorage.getItem("socketID"));
         });
 
         socket.removeAllListeners("playerCanPlay");
@@ -94,6 +94,7 @@ function GameRoom() {
 
         socket.removeAllListeners("getPlayedCard");
         socket.on("getPlayedCard", (data) => {
+            console.log(playedCard);
             const cards = document.querySelectorAll(".card");
 
             for (const card of cards) {
@@ -101,23 +102,32 @@ function GameRoom() {
             }
 
             console.log(data[0]);
-            if (playedCard) {
-                const findCardIndex = data[0].hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
-                console.log(findCardIndex);
-                const removedCard = data[0].hand.splice(findCardIndex, 1);
-                console.log(data[0].hand);
-                setGameState({
-                    ...gameState,
-                    hand: data[0].hand
-                });
+            const findCardIndex = data[0].hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
+            //console.log(findCardIndex);
+            const removedCard = data[0].hand.splice(findCardIndex, 1);
+            //console.log(data[0].hand);
+            setGameState({
+                ...gameState,
+                hand: data[0].hand,
+            });
+            setLastCard(playedCard.join(" "));
+            setGraveyard(graveyard.concat({suit: playedCard[0], value: playedCard[1]}));
 
-                socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), removedCard);
-            }
+            socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), removedCard);
+            console.log(graveyard);
+
         });
 
         socket.removeAllListeners("updatePlayedCard");
-        socket.on("updatePlayedCard", () => {
-            setLastCard(playedCard);
+        socket.on("updatePlayedCard", (card) => {
+            //console.log(card);
+            setLastCard(`${card[0].suit} ${card[0].value}`);
+        });
+
+        socket.removeAllListeners("trickFinished");
+        socket.on("trickFinished", () => {
+            console.log(graveyard);
+            socket.emit("getTrickWinner", graveyard);
         });
 
     }
