@@ -39,9 +39,9 @@ Link to game: [Skull King Online](https://sk-online.herokuapp.com)
 Link to backend server: [Skull King Online - Server](https://sk-online-server.herokuapp.com)
 
 ## Unsolved Problems / Contribution Requests
-There are some problems or unimplemented features due to time constraints that are listed below as follows.
+There are some problems or unimplemented features due to time constraints that are listed below.
 
-- Room list sometimes does properly update when users join or leave
+- Room list sometimes doesn't properly update when users join or leave
 - "Tigress" card is missing from the game due to additional functionality on being able to be played as either a Pirate or Escape
 - Game currently has no audio
 - First room creation after login sometimes results in an error, unable to find cause
