@@ -52,7 +52,6 @@ function UserSignUp() {
             password: data.get("password")
         })
             .then(function (response) {
-                console.log(response);
                 setError(false);
                 setUserData({
                     email: response.data.email,

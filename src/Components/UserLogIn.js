@@ -44,7 +44,6 @@ function UserLogIn() {
             password: data.get("password"),
         })
             .then(function (response) {
-                console.log(response);
                 setToken(response.data.token);
             })
             .catch(function (error) {
@@ -64,7 +63,6 @@ function UserLogIn() {
                     }
                 })
                     .then(function (res) {
-                        console.log(res.data);
                         localStorage.setItem("user", JSON.stringify(res.data));
                     })
                     .catch(function (err) {

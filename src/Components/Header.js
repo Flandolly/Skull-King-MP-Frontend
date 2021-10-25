@@ -22,7 +22,10 @@ function Header() {
                 backgroundColor: brown[400]
             }}>
                 <Toolbar>
-                   <NewRoomButton variant={"filled"}>Log Out</NewRoomButton>
+                   <NewRoomButton onClick={() => {
+                       localStorage.clear();
+                       return window.location.href = "/";
+                   }} variant={"filled"}>Log Out</NewRoomButton>
                 </Toolbar>
             </Grid>
         </header>

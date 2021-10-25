@@ -18,7 +18,6 @@ function ChatBox() {
     useEffect(() => {
         socket.removeAllListeners("message");
         socket.on("message", (message) => {
-            console.log("Chat message");
             const chatbox = document.getElementById("chat");
             const msg = document.createElement("li");
             msg.style.paddingLeft = "10px";
@@ -30,7 +29,6 @@ function ChatBox() {
     });
 
     function handleSubmit(event) {
-        //console.log(window.location.href.split("/")[4])
         event.preventDefault();
         const message = new FormData(event.currentTarget);
         socket.emit("chatMessage", window.location.href.split("/")[4], message.get("message"));

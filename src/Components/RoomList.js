@@ -46,9 +46,6 @@ function RoomList({showPrivate, showFull}) {
     }, [showPrivate, showFull, socket]);
 
     if (roomList.length !== 0) {
-        console.log("Hi");
-        console.log(roomList);
-
         socket.removeAllListeners("roomList");
         socket.on("roomList", (rooms) => {
             setRoomList(rooms);
@@ -71,7 +68,7 @@ function RoomList({showPrivate, showFull}) {
             }}
                   to={`/rooms/${room.id}`} key={idx}>
                 <Box sx={{
-                    mt: 3
+                    mt: 3,
                 }}>
                     <Stack>
                         <Card sx={{

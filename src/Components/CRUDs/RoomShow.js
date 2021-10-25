@@ -50,7 +50,6 @@ function RoomShow(props) {
     useEffect(() => {
         socket.removeAllListeners("syncRoom");
         socket.on("syncRoom", (room) => {
-            console.log(room);
             setRoom(room);
         });
     }, [socket]);
@@ -61,11 +60,6 @@ function RoomShow(props) {
             props.history.push(`/rooms/${room.id}/play`);
         });
     });
-
-    if (room) {
-        console.log(room);
-        console.log(storedUser._id === room.owner);
-    }
 
     if (room) {
         return (
@@ -101,20 +95,6 @@ function RoomShow(props) {
                                     <Typography>
                                         {player}{storedUser._id === room.owner ?
                                         <img
-                                            // onClick={() => {
-                                            //     console.log(storedUser._id);
-                                            //     console.log(room.owner);
-                                            //     if (player === room.players.find(plyr => {
-                                            //         console.log(plyr === storedUser.username);
-                                            //       return plyr === storedUser.username;
-                                            //     })) {
-                                            //         return;
-                                            //     }
-                                            //     socket.emit("userLeft", room, storedUser, localStorage.getItem("socketID"), "kickUser");
-                                            //     socket.on("kickUser", (destination) => {
-                                            //         return <Redirect to={destination}/>;
-                                            //     });
-                                            // }}
                                             src="https://img.icons8.com/ios-filled/18/fa314a/x.png"
                                             alt={"removePlayer"}/> : null}
                                     </Typography>
@@ -141,7 +121,7 @@ function RoomShow(props) {
                             my: "30px"
                         }}>
                             <RulesButton fullWidth onClick={() => {
-
+                                window.open("https://www.grandpabecksgames.com/pages/skull-king", "_blank").focus();
                             }}
                                          variant={"filled"}>Show Rules
                             </RulesButton>
@@ -150,14 +130,14 @@ function RoomShow(props) {
                             <StartButton
                                 fullWidth
                                 onClick={() => {
-                                    if (JSON.parse(localStorage.getItem("user"))._id !== room.owner) {
+                                    if (JSON.parse(localStorage.getItem("user"))._id !== room.owner || room.players.length <= 1) {
                                         return;
                                     } else {
                                         socket.emit("startGame", room);
                                     }
                                 }}
                                 variant={"filled"}
-                                disabled={JSON.parse(localStorage.getItem("user"))._id !== room.owner}
+                                disabled={JSON.parse(localStorage.getItem("user"))._id !== room.owner || room.players.length <= 1}
                             >Start Game
                             </StartButton>
                         </Grid>
@@ -168,7 +148,9 @@ function RoomShow(props) {
         );
     } else {
         return (
-            <div>Error</div>
+            <div>
+                Error loading game room.
+            </div>
         );
     }
 }

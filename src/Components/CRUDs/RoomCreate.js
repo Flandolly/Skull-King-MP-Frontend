@@ -34,10 +34,6 @@ function RoomCreate() {
         }
     }));
 
-    // useEffect(() => {
-    //     console.log(storedUser)
-    // }, [storedUser])
-
     function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

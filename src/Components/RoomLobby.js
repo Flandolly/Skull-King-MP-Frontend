@@ -77,7 +77,7 @@ function RoomLobby() {
                         width: "80vw",
                         display: "flex",
                         flexDirection: "row",
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
                     }}>
                         <NewRoomButton onClick={() => setShowModal(true)} variant={"contained"}>New Room</NewRoomButton>
                         <Box>
@@ -97,7 +97,11 @@ function RoomLobby() {
                             </FormGroup>
                         </Box>
                     </Box>
-                    <RoomList showPrivate={showPrivate} showFull={showFull}/>
+                    <Box sx={{
+                        height: "80vh",
+                    }}>
+                        <RoomList showPrivate={showPrivate} showFull={showFull}/>
+                    </Box>
                 </Box>
             </Container>
         </ThemeProvider>

@@ -95,16 +95,13 @@ function GameRoom() {
         });
 
         socket.emit("sendBid", gameState.name, parseInt(data.get("bid").toString()), localStorage.getItem("r_id"), localStorage.getItem("socketID"));
-
     }
 
     function handleClickedCard(event) {
-        if ([...document.getElementById("game-card").classList].includes("not-clickable")) {
+        if (event.currentTarget.classList.includes("not-clickable")) {
             return;
         } else {
-            console.log("You played a card");
             const playedCard = event.currentTarget.innerText.split("\n\n");
-            console.log(gameState);
 
             const cards = document.querySelectorAll(".card");
 
@@ -115,7 +112,6 @@ function GameRoom() {
 
             const findCardIndex = gameState.hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
             gameState.hand.splice(findCardIndex, 1);
-            console.log(gameState);
             setGameState({
                 ...gameState,
                 hand: gameState.hand
@@ -128,7 +124,6 @@ function GameRoom() {
                 value: playedCard[1]
             }, localStorage.getItem("socketID"));
         }
-        //console.log(playedCard);
     }
 
     if (gameState) {
@@ -145,7 +140,6 @@ function GameRoom() {
 
         socket.removeAllListeners("updatePlayedCard");
         socket.on("updatePlayedCard", (card) => {
-            //console.log(card);
             setLastCard(`${card.suit} ${card.value}`);
         });
 
@@ -157,7 +151,6 @@ function GameRoom() {
         socket.removeAllListeners("showLeaderboard");
         socket.on("showLeaderboard", (players) => {
             setLeaderboard(players);
-            console.log(players);
         });
 
         socket.removeAllListeners("gameOver");
@@ -173,6 +166,12 @@ function GameRoom() {
         socket.removeAllListeners("updateBid");
         socket.on("updateBid", (bid) => {
             setBid(bid);
+        });
+
+
+        socket.removeAllListeners("redirectToLobby");
+        socket.on("redirectToLobby", () => {
+            return window.location.href = "/lobby";
         });
 
         socket.removeAllListeners("message");
@@ -193,7 +192,7 @@ function GameRoom() {
             <Container component={"main"}>
                 <Grid
                     container
-                    width="30%"
+                    width="400px"
                     height={"25vh"}
                     sx={{
                         position: "absolute",
@@ -283,15 +282,6 @@ function GameRoom() {
                         sx={{
                             height: "60vh"
                         }}>
-                        <Grid sx={{
-                            height: "200px",
-                            width: "150px",
-                            border: "1px solid black",
-                            margin: "5px",
-                            textAlign: "center",
-                        }} item>
-                            Card Deck
-                        </Grid>
                         <Grid
                             id={"last-played-card"}
                             justifyContent={"center"}
@@ -320,6 +310,7 @@ function GameRoom() {
                             return (
                                 <Grid
                                     direction={"column"}
+                                    flexWrap={"nowrap"}
                                     justifyContent={"center"}
                                     onClick={(e) => handleClickedCard(e)}
                                     id={"game-card"}
