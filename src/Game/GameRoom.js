@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import {SocketContext} from "../context/socket";
 import Typography from "@mui/material/Typography";
-import {Backdrop, Fade, Modal} from "@mui/material";
+import {Backdrop, Fade, List, Modal, Paper} from "@mui/material";
 import {brown, deepOrange} from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
@@ -14,8 +14,12 @@ function GameRoom() {
 
     const [gameState, setGameState] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [leaderboard, setLeaderboard] = useState([]);
+    const [showGameOverModal, setShowGameOverModal] = useState(false);
     const [bidMade, setBidMade] = useState(false);
     const [lastCard, setLastCard] = useState(null);
+    const [tricks, setTricks] = useState(0);
+    const [bid, setBid] = useState(0);
     const socket = useContext(SocketContext);
 
     const SubmitButton = styled(Button)(({theme}) => ({
@@ -42,6 +46,21 @@ function GameRoom() {
         p: 4,
     };
 
+    const gameOverModalStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "absolute",
+        top: "35%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "30vw",
+        bgcolor: brown[300],
+        border: "2px solid #000",
+        boxShadow: 24,
+        p: 4,
+    };
+
     useEffect(() => {
         socket.removeAllListeners("gameStarted");
         socket.on("gameStarted", (data) => {
@@ -53,6 +72,9 @@ function GameRoom() {
             setGameState(data[0]);
             setBidMade(false);
             setShowModal(true);
+            setBid(0);
+            setTricks(0);
+            setLastCard("");
         });
 
         if (!bidMade) {
@@ -88,6 +110,7 @@ function GameRoom() {
 
             for (const card of cards) {
                 card.classList.add("not-clickable");
+                card.style.opacity = 0.5;
             }
 
             const findCardIndex = gameState.hand.findIndex((card) => card.suit === playedCard[0] && card.value === parseInt(playedCard[1]));
@@ -103,7 +126,7 @@ function GameRoom() {
             socket.emit("sendPlayedCard", gameState, localStorage.getItem("r_id"), {
                 suit: playedCard[0],
                 value: playedCard[1]
-            });
+            }, localStorage.getItem("socketID"));
         }
         //console.log(playedCard);
     }
@@ -116,6 +139,7 @@ function GameRoom() {
 
             for (const card of cards) {
                 card.classList.remove("not-clickable");
+                card.style.opacity = 1;
             }
         });
 
@@ -128,24 +152,69 @@ function GameRoom() {
         socket.removeAllListeners("playerWonTrick");
         socket.on("playerWonTrick", (winner) => {
             console.log("Winner: ", winner);
-            setLastCard("");
         });
 
         socket.removeAllListeners("showLeaderboard");
         socket.on("showLeaderboard", (players) => {
+            setLeaderboard(players);
             console.log(players);
-            setLastCard("");
         });
 
         socket.removeAllListeners("gameOver");
         socket.on("gameOver", () => {
-            console.log("Game is over! thanks for playing~");
+            setShowGameOverModal(true);
+        });
+
+        socket.removeAllListeners("updateTricks");
+        socket.on("updateTricks", (tricks) => {
+            setTricks(tricks);
+        });
+
+        socket.removeAllListeners("updateBid");
+        socket.on("updateBid", (bid) => {
+            setBid(bid);
+        });
+
+        socket.removeAllListeners("message");
+        socket.on("message", (message) => {
+            console.log("Chat message");
+            const chatbox = document.getElementById("chat");
+            const msg = document.createElement("li");
+            msg.style.paddingLeft = "10px";
+            msg.innerText = message;
+            chatbox.appendChild(msg);
+            const chat = document.getElementById("chatbox");
+            chat.scrollTop = chat.scrollHeight - chat.clientHeight;
         });
     }
 
     if (gameState) {
         return (
             <Container component={"main"}>
+                <Grid
+                    container
+                    width="30%"
+                    height={"25vh"}
+                    sx={{
+                        position: "absolute",
+                        top: "10%"
+                    }}
+                >
+                    Info
+                    <Grid item xs={12}>
+                        <Paper id={"chatbox"} sx={{
+                            height: "20vh",
+                            border: "2px solid orange",
+                            overflowY: "scroll",
+                            overflow: "auto",
+                            mb: "10px"
+                        }}>
+                            <List id="chat">
+
+                            </List>
+                        </Paper>
+                    </Grid>
+                </Grid>
                 <Modal
                     aria-labelledby={"modal-title"}
                     open={showModal}
@@ -175,6 +244,32 @@ function GameRoom() {
                                 <Grid xs={12} item>
                                     <SubmitButton type="submit" fullWidth variant={"filled"}>Submit</SubmitButton>
                                 </Grid>
+                            </Grid>
+                        </Box>
+                    </Fade>
+                </Modal>
+                <Modal
+                    aria-labelledby={"gameover-modal-title"}
+                    open={showGameOverModal}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={showGameOverModal}>
+                        <Box sx={gameOverModalStyle}>
+                            <Typography id={"gameover-modal-title"}>Game Over!</Typography>
+                            <Typography>Redirecting back to lobby in 15 seconds...</Typography>
+                            <Typography>________________________________</Typography>
+                            <Grid container direction={"column"}>
+                                {leaderboard.map((player, idx) => {
+                                    return (
+                                        <Grid key={idx} textAlign="center" item xs={12}>
+                                            {player.playerName} ({player.points} Points)
+                                        </Grid>
+                                    );
+                                })}
                             </Grid>
                         </Box>
                     </Fade>
@@ -210,6 +305,9 @@ function GameRoom() {
                             }} container>
                             {lastCard}
                         </Grid>
+                    </Grid>
+                    <Grid container justifyContent="center">
+                        Tricks: {tricks}/{bid}
                     </Grid>
                     <Grid
                         container
