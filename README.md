@@ -38,7 +38,7 @@ To get started, it's as simple as creating an account. When you sign up or sign 
 Link to game: [Skull King Online](https://sk-online.herokuapp.com)
 Link to backend server: [Skull King Online - Server](https://sk-online-server.herokuapp.com)
 
-## Unsolved Problems
+## Unsolved Problems / Contribution Requests
 There are some problems or unimplemented features due to time constraints that are listed below as follows.
 
 - Room list sometimes does properly update when users join or leave
