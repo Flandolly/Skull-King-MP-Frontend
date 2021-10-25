@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import {brown} from "@mui/material/colors";
-import RoomJoinForm from "./RoomJoinForm";
+// import RoomJoinForm from "./RoomJoinForm";
 
 function Home() {
 
@@ -30,14 +30,6 @@ function Home() {
 
                 </div>
                 <Link to={"/signup"}><UserButton variant={"contained"}>Sign Up</UserButton></Link>
-            </div>
-            <div>
-                <p className={"text-center landing-or"}>Or...</p>
-                <UserButton variant={"contained"}>Play As Guest</UserButton>
-            </div>
-            <div className={"landing-join-room"}>
-                <p className={"text-center"}><b>Already Have A Room?</b></p>
-                <RoomJoinForm/>
             </div>
         </div>
     );

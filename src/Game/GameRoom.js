@@ -9,7 +9,6 @@ import {brown, deepOrange} from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import {Redirect} from "react-router-dom";
 
 function GameRoom() {
 
@@ -157,6 +156,9 @@ function GameRoom() {
         socket.removeAllListeners("gameOver");
         socket.on("gameOver", () => {
             setShowGameOverModal(true);
+            setTimeout(() => {
+                return window.location.href = "/lobby";
+            }, 15000);
         });
 
         socket.removeAllListeners("updateTricks");
@@ -169,11 +171,6 @@ function GameRoom() {
             setBid(bid);
         });
 
-
-        socket.removeAllListeners("redirectToLobby");
-        socket.on("redirectToLobby", () => {
-            return <Redirect to={"/lobby"}/>;
-        });
 
         socket.removeAllListeners("message");
         socket.on("message", (message) => {
