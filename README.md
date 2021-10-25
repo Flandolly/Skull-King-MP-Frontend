@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+# Skull King Online
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+Skull King Online is a web application that is a recreation of a popular card game of the same name. The objective of the game is to make accurate bids on how many tricks you will gain for that round to earn points. Guess incorrectly, and you'll lose points! Users can create an account to play this game online with friends or even complete strangers.
 
-In the project directory, you can run:
+### Screenshots
 
-### `npm start`
+### Home Screen
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![Home_Screen](https://i.imgur.com/H6LQg9V.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Lobby
 
-### `npm test`
+![Lobby](https://i.imgur.com/JDFaX9G.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### In-Game
 
-### `npm run build`
+![InGame](https://i.imgur.com/veCYRjA.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- HTML/CSS
+- Node.js
+- ReactJS
+- ExpressJS
+- Mongoose
+- MongoDB
+- Material UI
+- Websockets (Socket.io) - Backend
+- Socket.io-Client - Frontend
+- Heroku
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started / Instructions
 
-### `npm run eject`
+To get started, it's as simple as creating an account. When you sign up or sign in, you will be redirected to the lobby page. There, you can create a new room or join an open room. Inside the lobby, you can learn how to play while you wait for people to join. Current ruleset and how to play the game can be found [here](https://www.grandpabecksgames.com/pages/skull-king).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Link to game: [Skull King Online](https://sk-online.herokuapp.com)
+Link to backend server: [Skull King Online - Server](https://sk-online-server.herokuapp.com)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Unsolved Problems / Contribution Requests
+There are some problems or unimplemented features due to time constraints that are listed below as follows.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Room list sometimes does properly update when users join or leave
+- "Tigress" card is missing from the game due to additional functionality on being able to be played as either a Pirate or Escape
+- Game currently has no audio
+- First room creation after login sometimes results in an error, unable to find cause
+- Depending on screen size, users may not be able to see cards that overflow to a new line when trying to place a bid
+- Users can join the same room twice (semi-intentional for demonstration purposes)
+- Room owners cannot kick users from the room
+- Room persists even after a game is finished
+- Room owners currently cannot invite players to their room
+- Game currently has unlimited time to make bids or play cards, plans to implement a timeout feature
+- Trick display in game sometimes doesn't update properly when a player wins a trick
