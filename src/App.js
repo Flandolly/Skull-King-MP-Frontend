@@ -9,6 +9,7 @@ import {SocketContext, socket} from "./context/socket";
 import {UserProvider} from "./context/GlobalStates";
 import RoomShow from "./Components/CRUDs/RoomShow";
 import GameRoom from "./Game/GameRoom";
+import Header from "./Components/Header";
 
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
     return (
         <UserProvider>
             <SocketContext.Provider value={socket}>
-                <div className={"app-container"}>
+                {!["/login", "/signup", "/"].includes(window.location.pathname) ? <Header/> : null}
+                <main className={"app-container"}>
                     <Route path={"/"} exact component={Home}/>
                     <Route path={"/signup"} exact component={UserSignUp}/>
                     <Route path={"/login"} exact component={UserLogIn}/>
@@ -31,7 +33,7 @@ function App() {
                     <Route path={"/lobby"} exact component={RoomLobby}/>
                     <Route path={"/rooms/:id"} exact component={RoomShow}/>
                     <Route path={"/rooms/:id/play"} exact component={GameRoom}/>
-                </div>
+                </main>
             </SocketContext.Provider>
         </UserProvider>
     );

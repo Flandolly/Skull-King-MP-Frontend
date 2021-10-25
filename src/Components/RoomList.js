@@ -17,14 +17,27 @@ function RoomList({showPrivate, showFull}) {
     useEffect(() => {
         axios.get(`${APIURL}/rooms`)
             .then(function (response) {
-                if (!showPrivate) {
-                    const filtered = response.data.filter((room) => room.isPublic === true);
+                if (!showPrivate && !showFull) {
+                    const filtered = response.data.filter((room) => {
+                        return room.isPublic === true && room.players.length < room.maxPlayers;
+                    });
                     setRoomList(filtered);
-                } else if (!showFull) {
-                    const filtered = response.data.filter((room) => room.players.length < 8);
+                    return <Redirect to={"/lobby"}/>;
+                } else if (showPrivate && !showFull) {
+                    const filtered = response.data.filter((room) => {
+                        return room.players.length < room.maxPlayers;
+                    });
                     setRoomList(filtered);
-                } else {
+                    return <Redirect to={"/lobby"}/>;
+                } else if (!showPrivate && showFull) {
+                    const filtered = response.data.filter((room) => {
+                        return room.isPublic === true;
+                    });
+                    setRoomList(filtered);
+                    return <Redirect to={"/lobby"}/>;
+                } else if (showPrivate && showFull) {
                     setRoomList(response.data);
+                    return <Redirect to={"/lobby"}/>;
                 }
             })
             .catch(function(error) {

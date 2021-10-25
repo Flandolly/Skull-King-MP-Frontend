@@ -7,17 +7,19 @@ html {
     height: 100vh;
 }
 
-div.app-container {
+main.app-container {
     position: relative;
     margin: 0;
     z-index: 1;
+    width: 100vw;
+    height: 100vh;
     /*background-image: url("https://i.imgur.com/kJiQ8P9.png");*/
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-div.app-container:before {
+main.app-container:before {
     content: "";
     position: absolute;
     z-index: -1;
@@ -25,15 +27,15 @@ div.app-container:before {
     height: 100vh;
     background: url("https://i.imgur.com/kJiQ8P9.png") no-repeat fixed;
     background-size: cover;
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .css-binzgt {
-    margin-top: 0!important;
+    margin-top: 0 !important;
 }
 
 .signup-title, .signin-title {
-    margin-top: 40px!important;
+    margin-top: 40px !important;
 }
 
 .main-container {
@@ -43,7 +45,7 @@ div.app-container:before {
 .landing-title, .lobby-title {
     color: saddlebrown;
     font-size: 5.5em;
-    font-family: "Pirata One", fantasy!important;
+    font-family: "Pirata One", fantasy !important;
     text-shadow: -1px -1px 0 yellow, 1px -1px 0 #ffae00, -1px 1px 0 #ffae00, 1px 1px 0 yellow;
 }
 

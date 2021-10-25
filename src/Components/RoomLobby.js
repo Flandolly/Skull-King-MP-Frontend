@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
-import {red, brown} from "@mui/material/colors";
+import {brown, deepOrange} from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -34,11 +34,11 @@ function RoomLobby() {
     };
 
     const NewRoomButton = styled(Button)(({theme}) => ({
-        color: theme.palette.getContrastText(red[500]),
-        backgroundColor: red[500],
+        color: theme.palette.getContrastText(deepOrange[500]),
+        backgroundColor: deepOrange[700],
         padding: "10px",
         "&:hover": {
-            backgroundColor: red[700],
+            backgroundColor: deepOrange[900],
         }
     }));
 
