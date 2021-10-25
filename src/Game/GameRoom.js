@@ -9,6 +9,7 @@ import {brown, deepOrange} from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import {styled} from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import {Redirect} from "react-router-dom";
 
 function GameRoom() {
 
@@ -98,7 +99,7 @@ function GameRoom() {
     }
 
     function handleClickedCard(event) {
-        if (event.currentTarget.classList.includes("not-clickable")) {
+        if ([...event.currentTarget.classList].includes("not-clickable")) {
             return;
         } else {
             const playedCard = event.currentTarget.innerText.split("\n\n");
@@ -171,7 +172,7 @@ function GameRoom() {
 
         socket.removeAllListeners("redirectToLobby");
         socket.on("redirectToLobby", () => {
-            return window.location.href = "/lobby";
+            return <Redirect to={"/lobby"}/>;
         });
 
         socket.removeAllListeners("message");
