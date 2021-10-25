@@ -149,7 +149,6 @@ function GameRoom() {
                 <Modal
                     aria-labelledby={"modal-title"}
                     open={showModal}
-                    onClose={() => setShowModal(false)}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{

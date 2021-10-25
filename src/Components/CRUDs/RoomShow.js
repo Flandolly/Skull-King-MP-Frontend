@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {SocketContext} from "../../context/socket";
 import {Avatar} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {deepOrange, red, green} from "@mui/material/colors";
+import {deepOrange, red, green, amber} from "@mui/material/colors";
 import Button from "@mui/material/Button";
 import {styled} from "@mui/material/styles";
 import ChatBox from "../ChatBox";
@@ -14,7 +14,10 @@ function RoomShow(props) {
 
     const socket = useContext(SocketContext);
     const [room, setRoom] = useState(null);
+    //TODO: Implement rules modal OR send to rules link
+    //const [showRulesModal, setShowRulesModal] = useState(false);
     const storedUser = JSON.parse(localStorage.getItem("user"));
+
 
     const LeaveButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(red[500]),
@@ -24,6 +27,16 @@ function RoomShow(props) {
             backgroundColor: red[700],
         }
     }));
+
+    const RulesButton = styled(Button)(({theme}) => ({
+        color: theme.palette.getContrastText(amber[500]),
+        backgroundColor: amber[500],
+        padding: "10px",
+        "&:hover": {
+            backgroundColor: amber[700],
+        }
+    }));
+
 
     const StartButton = styled(Button)(({theme}) => ({
         color: theme.palette.getContrastText(green[500]),
@@ -37,7 +50,7 @@ function RoomShow(props) {
     useEffect(() => {
         socket.removeAllListeners("syncRoom");
         socket.on("syncRoom", (room) => {
-            //console.log(room)
+            console.log(room);
             setRoom(room);
         });
     }, [socket]);
@@ -48,6 +61,11 @@ function RoomShow(props) {
             props.history.push(`/rooms/${room.id}/play`);
         });
     });
+
+    if (room) {
+        console.log(room);
+        console.log(storedUser._id === room.owner);
+    }
 
     if (room) {
         return (
@@ -81,7 +99,24 @@ function RoomShow(props) {
                                         height: 100
                                     }}>{player[0].toUpperCase()}</Avatar>
                                     <Typography>
-                                        {player}
+                                        {player}{storedUser._id === room.owner ?
+                                        <img
+                                            // onClick={() => {
+                                            //     console.log(storedUser._id);
+                                            //     console.log(room.owner);
+                                            //     if (player === room.players.find(plyr => {
+                                            //         console.log(plyr === storedUser.username);
+                                            //       return plyr === storedUser.username;
+                                            //     })) {
+                                            //         return;
+                                            //     }
+                                            //     socket.emit("userLeft", room, storedUser, localStorage.getItem("socketID"), "kickUser");
+                                            //     socket.on("kickUser", (destination) => {
+                                            //         return <Redirect to={destination}/>;
+                                            //     });
+                                            // }}
+                                            src="https://img.icons8.com/ios-filled/18/fa314a/x.png"
+                                            alt={"removePlayer"}/> : null}
                                     </Typography>
                                 </Grid>
                             );
@@ -98,18 +133,33 @@ function RoomShow(props) {
                                 <LeaveButton fullWidth onClick={() => {
                                     socket.emit("userLeft", room, storedUser);
                                 }}
-                                        variant={"filled"}>Leave
+                                             variant={"filled"}>Leave Room
                                 </LeaveButton>
                             </Link>
                         </Grid>
+                        <Grid item xs={12} sx={{
+                            my: "30px"
+                        }}>
+                            <RulesButton fullWidth onClick={() => {
+
+                            }}
+                                         variant={"filled"}>Show Rules
+                            </RulesButton>
+                        </Grid>
                         <Grid item xs={12}>
-                            <Link to={`/rooms/${room.id}/play`}>
-                                <StartButton fullWidth onClick={() => {
-                                    socket.emit("startGame", room);
+                            <StartButton
+                                fullWidth
+                                onClick={() => {
+                                    if (JSON.parse(localStorage.getItem("user"))._id !== room.owner) {
+                                        return;
+                                    } else {
+                                        socket.emit("startGame", room);
+                                    }
                                 }}
-                                        variant={"filled"}>Start Game
-                                </StartButton>
-                            </Link>
+                                variant={"filled"}
+                                disabled={JSON.parse(localStorage.getItem("user"))._id !== room.owner}
+                            >Start Game
+                            </StartButton>
                         </Grid>
                     </Grid>
                 </Grid>
