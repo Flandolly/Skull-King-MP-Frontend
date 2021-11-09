@@ -2,7 +2,7 @@
 
 ## Description
 
-Skull King Online is a web application that is a recreation of a popular card game of the same name. The objective of the game is to make accurate bids on how many tricks you will gain for that round to earn points. Guess incorrectly, and you'll lose points! Users can create an account to play this game online with friends or even complete strangers.
+Skull King Online is a web application that is a recreation of a popular card game of the same name. The objective of the game is to make accurate bids on how many tricks you will gain for that round to earn points. Guess incorrectly, and you'll lose points! Users can create an account to play this game online with friends or even complete strangers. Also, users will stay logged in even when they close the page so they won't have to login again!
 
 ### Screenshots
 
@@ -51,4 +51,5 @@ There are some problems or unimplemented features due to time constraints that a
 - Room persists even after a game is finished
 - Room owners currently cannot invite players to their room
 - Game currently has unlimited time to make bids or play cards, plans to implement a timeout feature
+- Users are currently able to "cheat" by not following suit even if they have cards of the leading suit in their hand.
 - Trick display in game sometimes doesn't update properly when a player wins a trick
